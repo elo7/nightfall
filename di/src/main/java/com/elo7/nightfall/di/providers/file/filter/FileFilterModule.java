@@ -1,10 +1,9 @@
 package com.elo7.nightfall.di.providers.file.filter;
 
+import com.elo7.nightfall.di.providers.file.FileConfiguration;
 import com.elo7.nightfall.di.providers.file.FileFilter;
 import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
 import com.netflix.governator.guice.lazy.LazySingletonScope;
-import com.netflix.governator.lifecycle.ClasspathScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,36 +13,26 @@ public class FileFilterModule extends AbstractModule {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileFilterModule.class);
 
-	private final ClasspathScanner scanner;
+	private final FileConfiguration configuration;
 
 	@Inject
-	FileFilterModule(ClasspathScanner scanner) {
-		this.scanner = scanner;
-	}
-
-	@Override
-	protected void configure() {
-
-		bind(FileFilter.class)
-				.toProvider(FileFilterProvider.class)
-				.in(LazySingletonScope.get());
-
-		LOGGER.info("Binding FileFilters for FileRDD");
-		Multibinder<FileFilter> binder = Multibinder.newSetBinder(binder(), FileFilter.class);
-
-		scanner
-				.getClasses()
-				.stream()
-				.filter(this::filer)
-				.forEach(clazz -> bindRepo(clazz, binder));
+	FileFilterModule(FileConfiguration configuration) {
+		this.configuration = configuration;
 	}
 
 	@SuppressWarnings("unchecked")
-	private void bindRepo(Class<?> clazz, Multibinder<FileFilter> binder) {
-		binder.addBinding().to((Class) clazz).in(LazySingletonScope.get());
-	}
+	@Override
+	protected void configure() {
+		LOGGER.info("Binding FileFilters for FileRDD");
 
-	private boolean filer(Class<?> clazz) {
-		return FileFilter.class.isAssignableFrom(clazz);
+		try {
+			Class clazz = Class.forName(configuration.getFilterClass());
+			bind(FileFilter.class)
+					.to(clazz)
+					.in(LazySingletonScope.get());
+
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Unknown File Filter Implementation: " + configuration.getFilterClass(), e);
+		}
 	}
 }
