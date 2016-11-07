@@ -1,0 +1,16 @@
+// Cassandra
+description = 'Cassandra Utilities'
+
+ext {
+  projectName = 'nightfall-cassandra'
+}
+
+jar {
+  appendix = 'cassandra'
+}
+
+dependencies {
+  provided libs.COMMONS_LANG, libs.SLF4J, libs.SPARK
+  compile libs.GOVERNATOR, libs.CASSANDRA, libs.NETTY_IO
+  testCompile libs.TEST
+}

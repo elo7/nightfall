@@ -1,0 +1,39 @@
+description = 'Nightfall examples'
+
+ext {
+  projectName = 'nightfall-examples'
+}
+
+apply plugin:'application'
+
+jar {
+  appendix = 'examples'
+  // Fat jar build instructions
+  dependsOn configurations.runtime
+  from {
+    // Exclude provided dependencies
+    (configurations.runtime - configurations.provided).collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+}
+
+dependencies {
+  provided libs.SPARK, libs.AWS, libs.SLF4J
+  compile  project(':di')
+  testCompile libs.TEST
+}
+
+// Run configurations
+applicationDefaultJvmArgs = ["-Dspark.app.name=NightfallDistcp", "-Dspark.master=local[4]"]
+run {
+  if ( project.hasProperty('runArgs') ) {
+    args project.runArgs.split(" ")
+  }
+
+  if ( project.hasProperty('mainClass') ) {
+    mainClassName =  project.mainClass
+  } else {
+    mainClassName = "com.elo7.nightfall.examples.helloworld.HelloWorldJob"
+  }
+}

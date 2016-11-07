@@ -1,0 +1,18 @@
+description = 'Dependency injection for Spark'
+
+ext {
+  projectName = 'nightfall-di'
+}
+
+jar {
+  appendix = 'di'
+}
+
+dependencies {
+  provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.METRICS, libs.SLF4J,
+          // Provided due lack of support for optional dependencies from gradle: https://issues.gradle.org/browse/GRADLE-1749
+          project(':persistence/cassandra'), project(':persistence/relational')
+  compile  libs.JSON, libs.GOVERNATOR, libs.NETTY_IO, libs.STATSD
+  testCompile libs.TEST
+}
+
