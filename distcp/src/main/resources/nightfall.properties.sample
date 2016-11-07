@@ -1,0 +1,23 @@
+# Required
+aws.s3.bucket=my-buckert.mycompany.com
+aws.region=us-east-1
+aws.s3.path=raw_logs/production/secor_backup/events
+distcp.output.dir=/tmp/distcp
+
+# Distcp Window
+#distcp.window.size.days=1
+#distcp.window.date.end=YYYY-MM-dd
+
+# Optional S3 keys
+aws.access.key=
+aws.secret.key=
+
+# Job History
+batch.cassandra.hosts=localhost
+batch.cassandra.port=9042
+batch.cassandra.user=
+batch.cassandra.password=
+batch.cassandra.keyspace=kafka
+batch.cassandra.datacenter=
+batch.cassandra.history.ttl.days=7
+batch.history.enabled=false

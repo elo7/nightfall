@@ -1,0 +1,25 @@
+# eclipse
+.settings
+.project
+.classpath
+
+# idea
+*.iml
+*.ipr
+*.iws
+.idea
+out
+
+# maven
+target
+
+# gradle
+bin
+build
+.gradle
+
+# mac
+.store
+.DS_STORE
+
+nightfall.properties

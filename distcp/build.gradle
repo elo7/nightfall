@@ -1,0 +1,34 @@
+description = 'Copy files from S3 to the file system'
+
+ext {
+  projectName = 'nightfall-distcp'
+}
+
+apply plugin:'application'
+
+jar {
+  appendix = 'distcp'
+  // Fat jar build instructions
+  dependsOn configurations.runtime
+  from {
+    // Exclude provided dependencies
+    (configurations.runtime - configurations.provided).collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+}
+
+dependencies {
+  provided libs.SPARK, libs.AWS, libs.SLF4J
+  compile  project(':di')
+  testCompile libs.TEST
+}
+
+// Run configurations
+mainClassName = "com.elo7.nightfall.distcp.NightfallDistcpJob"
+applicationDefaultJvmArgs = ["-Dspark.app.name=NightfallDistcp", "-Dspark.master=local[4]"]
+run {
+  if ( project.hasProperty('runArgs') ) {
+    args project.runArgs.split(" ")
+  }
+}

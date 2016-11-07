@@ -1,0 +1,25 @@
+apply plugin: 'application'
+description = 'Migrations for Kafka Simple with Cassandra'
+
+ext {
+  projectName = 'nightfall-di-migrations'
+}
+
+jar {
+  appendix = 'migrations'
+}
+
+dependencies {
+  compile libs.CASSANDRA_MIGRATION, libs.LOGBACK
+}
+
+// Run Configurations
+mainClassName = "com.contrastsecurity.cassandra.migration.CommandLine"
+applicationDefaultJvmArgs = [ "-Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db/migration" ]
+run {
+	args = ["migrate"]
+
+	if ( project.hasProperty('runArgs') ) {
+		applicationDefaultJvmArgs.addAll(project.runArgs.split(" "))
+	}
+}
