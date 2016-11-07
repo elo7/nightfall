@@ -2,6 +2,7 @@ package com.elo7.nightfall.di;
 
 import com.elo7.nightfall.di.executors.MissingExecutorException;
 import com.elo7.nightfall.di.executors.TaskExecutor;
+import com.elo7.nightfall.di.executors.batch.JobHistoryModule;
 import com.elo7.nightfall.di.providers.ExecutorProvider;
 import com.elo7.nightfall.di.providers.reporter.ReporterModule;
 import com.elo7.nightfall.di.tasks.Task;
@@ -58,7 +59,7 @@ public class NightfallApplication {
 		Injector injector = LifecycleInjector
 				.builder()
 				.usingClasspathScanner(scanner)
-				.withModuleClasses(provider.module(), ReporterModule.class)
+				.withModuleClasses(provider.module(), ReporterModule.class, JobHistoryModule.class)
 				.withModuleClasses(provider.additionalModules())
 				.withBootstrapModule(new NightfallBootStrapModule(args, provider.provider()))
 				.inStage(Stage.DEVELOPMENT)

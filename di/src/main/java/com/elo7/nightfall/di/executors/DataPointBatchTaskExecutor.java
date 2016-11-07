@@ -2,8 +2,8 @@ package com.elo7.nightfall.di.executors;
 
 import com.elo7.nightfall.di.commons.datapoint.DataPoint;
 import com.elo7.nightfall.di.commons.datapoint.DataPointValidator;
-import com.elo7.nightfall.di.executors.batch.CassandraJobRepository;
 import com.elo7.nightfall.di.executors.batch.JobHistory;
+import com.elo7.nightfall.di.executors.batch.JobHistoryRepository;
 import com.elo7.nightfall.di.providers.reporter.ApplicationType;
 import com.elo7.nightfall.di.providers.reporter.ReporterSender;
 import com.elo7.nightfall.di.tasks.BatchTaskProcessor;
@@ -23,14 +23,14 @@ public class DataPointBatchTaskExecutor implements TaskExecutor {
 	private final JavaRDD<DataPoint<String>> rdd;
 	private final Set<BatchTaskProcessor> processors;
 	private final Properties configurations;
-	private final CassandraJobRepository repository;
+	private final JobHistoryRepository repository;
 	private final ReporterSender reporter;
 
 	@Inject
 	DataPointBatchTaskExecutor(JavaRDD<DataPoint<String>> rdd,
 							   Set<BatchTaskProcessor> processors,
 							   @Named("ApplicationProperties") Properties configurations,
-							   CassandraJobRepository repository,
+							   JobHistoryRepository repository,
 							   ReporterSender reporter) {
 		this.rdd = rdd;
 		this.processors = processors;

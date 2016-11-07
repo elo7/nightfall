@@ -1,7 +1,7 @@
 package com.elo7.nightfall.di.executors;
 
-import com.elo7.nightfall.di.executors.batch.CassandraJobRepository;
 import com.elo7.nightfall.di.executors.batch.JobHistory;
+import com.elo7.nightfall.di.executors.batch.JobHistoryRepository;
 import com.elo7.nightfall.di.providers.reporter.ApplicationType;
 import com.elo7.nightfall.di.providers.reporter.ReporterSender;
 import com.elo7.nightfall.di.tasks.BatchTaskProcessor;
@@ -21,14 +21,14 @@ public class BatchTaskExecutor implements TaskExecutor {
 	private final JavaRDD<String> rdd;
 	private final Set<BatchTaskProcessor> processors;
 	private final Properties configurations;
-	private final CassandraJobRepository repository;
+	private final JobHistoryRepository repository;
 	private final ReporterSender reporter;
 
 	@Inject
 	BatchTaskExecutor(JavaRDD<String> rdd,
 					  Set<BatchTaskProcessor> processors,
 					  @Named("ApplicationProperties") Properties configurations,
-					  CassandraJobRepository repository,
+					  JobHistoryRepository repository,
 					  ReporterSender reporter) {
 		this.rdd = rdd;
 		this.processors = processors;
