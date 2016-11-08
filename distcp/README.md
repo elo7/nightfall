@@ -61,7 +61,7 @@ distcp.window.type=MONTH
 
 ## Execution
 ```shell
-gradle ':distcp':run
+./gradlew ':distcp':run
 ```
 
 ## Development
