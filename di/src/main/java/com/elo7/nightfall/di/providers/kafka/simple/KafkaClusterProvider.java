@@ -21,7 +21,7 @@ public class KafkaClusterProvider implements Provider<KafkaCluster> {
 	@Provides
 	@Singleton
 	public KafkaCluster get() {
-		return new KafkaCluster(JavaConversions.asScalaMap(
+		return new KafkaCluster(JavaConversions.mapAsScalaMap(
 				configuration.params()).toMap(scala.Predef$.MODULE$.<scala.Tuple2<String, String>>conforms()));
 	}
 }

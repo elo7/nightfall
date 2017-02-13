@@ -31,9 +31,9 @@ public class ConfigurationProvider {
                     properties = ClassLoader.getSystemResourceAsStream(schema.getPath());
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid source "
+                    throw new IllegalArgumentException("Invalid configuration source {"
                             + schema.getSource()
-                            + " for Nightfall configuration");
+                            + "} for Nightfall configuration");
             }
 
             if (properties == null) {

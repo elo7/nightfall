@@ -25,7 +25,7 @@ public class StreamTaskExecutor implements TaskExecutor {
             context.awaitTermination();
         } catch (Exception e) {
             LOGGER.error("Error while processing stream", e);
-            throw e;
+            throw new RuntimeException(e);
         } finally {
             context.stop(true, true);
         }
