@@ -1,1 +1,1 @@
-include 'di', 'di-integration', 'persistence/cassandra', 'persistence/relational', 'migrations', 'distcp', 'examples'
+include 'di', 'di-integration', 'persistence/cassandra', 'persistence/relational', 'migrations', 'distcp', 'examples', 'di-providers/kafka-0-8'

@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface KafkaTopicRepository extends Serializable {
 
-    Map<TopicAndPartition, Long> findTopicOffset(Set<String> topics, String application);
+	Map<TopicAndPartition, Long> findTopicOffset(Set<String> topics, String application);
 
-    void persistTopics(List<OffsetRange> offsetRanges, String application);
+	void persistTopics(List<OffsetRange> offsetRanges, String application);
 }
