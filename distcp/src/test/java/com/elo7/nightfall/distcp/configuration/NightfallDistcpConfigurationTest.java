@@ -56,7 +56,7 @@ public class NightfallDistcpConfigurationTest {
 		subject.type = DistcpType.MONTH.name();
 		Set<LocalDate> dates = subject.getWindowDays();
 
-		LocalDate firstDayOfMonth = (LocalDate) dates.toArray()[0];
+		LocalDate firstDayOfMonth = dates.toArray(new LocalDate[0])[0];
 
 		assertEquals(NOW.atDay(1), firstDayOfMonth);
 	}
@@ -66,7 +66,7 @@ public class NightfallDistcpConfigurationTest {
 		subject.type = DistcpType.MONTH.name();
 		Set<LocalDate> dates = subject.getWindowDays();
 
-		LocalDate lastDayOfMonth = (LocalDate) dates.toArray()[dates.size() - 1];
+		LocalDate lastDayOfMonth = dates.toArray(new LocalDate[0])[dates.size() - 1];
 
 		assertEquals(NOW.atEndOfMonth(), lastDayOfMonth);
 	}

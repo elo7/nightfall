@@ -1,6 +1,5 @@
 package com.elo7.nightfall.di.providers.kafka;
 
-
 import com.elo7.nightfall.di.providers.ExecutorProvider;
 import com.elo7.nightfall.di.providers.kafka.highlevel.KafkaHighLevelConfiguration;
 import com.elo7.nightfall.di.providers.kafka.highlevel.KafkaHighLevelStreamingContextProvider;

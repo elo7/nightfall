@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Kafka simple configurations:
@@ -36,7 +36,8 @@ public class KafkaSimpleConfiguration implements Serializable {
 	private String kafkaAutoOffsetReset = "largest";
 
 	public Set<String> getTopics() {
-		Set<String> topicSet = Stream.of(topics.split(","))
+		Set<String> topicSet = Arrays
+				.stream(topics.split(","))
 				.filter(StringUtils::isNotBlank)
 				.collect(Collectors.toSet());
 
