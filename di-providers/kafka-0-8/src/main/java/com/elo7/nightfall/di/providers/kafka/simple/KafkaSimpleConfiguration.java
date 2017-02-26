@@ -1,6 +1,7 @@
 package com.elo7.nightfall.di.providers.kafka.simple;
 
 import com.elo7.nightfall.di.providers.kafka.InvalidTopicConfigurationException;
+import com.elo7.nightfall.di.providers.kafka.topics.CassandraKafkaTopicRepository;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.netflix.governator.annotations.Configuration;
@@ -8,10 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Kafka simple configurations:
@@ -34,10 +35,11 @@ public class KafkaSimpleConfiguration implements Serializable {
 	private Boolean persistentTopicOffsets = false;
 	@Configuration("kafka.auto.offset.reset")
 	private String kafkaAutoOffsetReset = "largest";
+	@Configuration("kafka.simple.repository.class")
+	private String repositoryClass = CassandraKafkaTopicRepository.class.getName();
 
 	public Set<String> getTopics() {
-		Set<String> topicSet = Arrays
-				.stream(topics.split(","))
+		Set<String> topicSet = Stream.of(topics.split(","))
 				.filter(StringUtils::isNotBlank)
 				.collect(Collectors.toSet());
 
@@ -64,5 +66,9 @@ public class KafkaSimpleConfiguration implements Serializable {
 
 	public KafkaAutoOffsetReset getKafkaAutoOffsetReset() {
 		return KafkaAutoOffsetReset.valueOf(kafkaAutoOffsetReset.toUpperCase());
+	}
+
+	public String getRepositoryClass() {
+		return repositoryClass;
 	}
 }
