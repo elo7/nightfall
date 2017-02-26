@@ -15,5 +15,5 @@ CREATE TABLE offset_ranges_history(
 	partition int,
 	fromOffset bigint,
 	untilOffset bigint,
-	PRIMARY KEY(application, topic, partition, fromOffset)
+	PRIMARY KEY(application, topic, partition, createdAt)
 );

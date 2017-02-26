@@ -1,7 +1,7 @@
 # Required
-aws.s3.bucket=kafka.sa.elo7.com
-aws.region=sa-east-1
-aws.s3.path=raw_logs/production/secor_backup/marketplace_events
+aws.s3.bucket=my-bucket.mycompany.com
+aws.region=us-east-1
+aws.s3.path=raw_logs/production/secor_backup/events
 distcp.output.dir=/tmp/distcp
 
 # Distcp Window
@@ -13,7 +13,8 @@ aws.access.key=
 aws.secret.key=
 
 # Job History
-batch.cassandra.hosts=cassandra
+batch.cassandra.hosts=localhost
+batch.cassandra.port=9042
 batch.cassandra.user=
 batch.cassandra.password=
 batch.cassandra.keyspace=kafka

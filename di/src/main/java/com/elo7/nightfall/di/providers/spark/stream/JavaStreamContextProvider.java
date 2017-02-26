@@ -38,6 +38,7 @@ public class JavaStreamContextProvider<T> implements Serializable {
 		this.sparkStreamConverter = sparkStreamConverter;
 	}
 
+	@SuppressWarnings("Convert2MethodRef")
 	public JavaStreamingContext getStreamingContext() {
 		Optional<String> checkpoint = configuration.getCheckpointDir();
 

@@ -15,6 +15,7 @@ public class DataPointStreamContextConverter implements SparkStreamConverter<Dat
 	private static final long serialVersionUID = 1L;
 	private static final Type TYPE = new TypeToken<DataPoint<String>>() {}.getType();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public JavaDStream<DataPoint<String>> convert(JavaDStream<String> stream) {
 		return stream
