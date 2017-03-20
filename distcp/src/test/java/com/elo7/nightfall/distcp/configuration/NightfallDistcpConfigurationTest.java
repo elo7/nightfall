@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -54,7 +55,7 @@ public class NightfallDistcpConfigurationTest {
 	@Test
 	public void firstElementOfSetMustBeFirstDayOfMonth() {
 		subject.type = DistcpType.MONTH.name();
-		Set<LocalDate> dates = subject.getWindowDays();
+		LinkedHashSet<LocalDate> dates = (LinkedHashSet) subject.getWindowDays();
 
 		LocalDate firstDayOfMonth = (LocalDate) dates.toArray()[0];
 
@@ -64,7 +65,7 @@ public class NightfallDistcpConfigurationTest {
 	@Test
 	public void lastElementOfSetMustBeLastDayOfMonth() {
 		subject.type = DistcpType.MONTH.name();
-		Set<LocalDate> dates = subject.getWindowDays();
+		LinkedHashSet<LocalDate> dates = (LinkedHashSet) subject.getWindowDays();
 
 		LocalDate lastDayOfMonth = (LocalDate) dates.toArray()[dates.size() - 1];
 

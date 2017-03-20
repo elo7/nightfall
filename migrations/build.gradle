@@ -11,7 +11,7 @@ dependencies {
 
 // Run Configurations
 mainClassName = "com.contrastsecurity.cassandra.migration.CommandLine"
-applicationDefaultJvmArgs = [ "-Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db/migration" ]
+applicationDefaultJvmArgs = [ "-Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db/migration,classpath:com.elo7.nightfall.migrations" ]
 run {
 	args = ["migrate"]
 

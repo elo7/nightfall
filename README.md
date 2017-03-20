@@ -10,7 +10,7 @@ Developed initally by team Greyjoy, provides dependency injection and configurat
 
 * [Dependency Injection](di/README.md): this is the module that provides the injection of dependency.
 * [Integration DI](di-integration/README.md): integration testing for injection dependence.
-* [Cassandra](https://github.com/elo7/nightfall/wiki/how-to-use#persistent-utilities-for-rdd-consuming): module that configures the connection to Cassandra and are easier to use.
-* [Relational](https://github.com/elo7/nightfall/wiki/how-to-use#persistent-utilities-for-rdd-consuming): module that configures the connection with relational databases, makes use of [JDBI](http://jdbi.org/).
+* [Cassandra](persistence/cassandra/README.md): module that configures the connection to Cassandra and are easier to use.
+* [Relational](persistence/relation/README.md): module that configures the connection with relational databases, makes use of [JDBI](http://jdbi.org/).
 * [Migrations](migrations/README.md): Migrations for DI use with Kafka Simple and Cassandra.
 * [Distcp](distcp/README.md): distributed copy of the S3 data.

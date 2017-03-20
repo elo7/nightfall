@@ -1,10 +1,10 @@
 # Kafka Consumer
-#kafka.brokers=localhost:9092
+#kafka.brokers=192.168.99.100:9092
 #kafka.topics=sample_events
 
 # Kafka Offset
 #kafka.offset.persistent=false
-#kafka.cassandra.hosts=localhost
+#kafka.cassandra.hosts=cassandra
 #kafka.cassandra.keyspace=kafka
 #kafka.cassandra.auto.migration=false
 #kafka.cassandra.user=
@@ -14,7 +14,7 @@
 # Stream Configurations
 #stream.batch.interval.ms=15000
 #stream.provider.converter=com.elo7.nightfall.di.providers.spark.stream.DataPointStreamContextConverter
-#stream.checkpoint.directory=/tmp/examples/HelloWorldJob
+#stream.checkpoint.directory=/Users/developer/dev/tmp/examples/HelloWorldJob
 
 # Monitoring config
 #reporter.statsd.host=localhost
@@ -34,7 +34,7 @@ database.driver.class=org.postgresql.Driver
 
 # Cassandra Configuration
 # Cassandra
-cassandra.hosts=localhost
+cassandra.hosts=192.168.99.100
 cassandra.port=9042
 cassandra.keyspace=example
 cassandra.user=
@@ -45,13 +45,13 @@ cassandra.datacenter=
 # File Configuration
 file.s3.access.key=
 file.s3.secret.key=
-file.source=/tmp/test
+file.source=/Users/developer/Downloads/test
 
 # Batch
 batch.history.enabled=false
 
 # Batch - Job History
-batch.cassandra.hosts=localhost
+batch.cassandra.hosts=cassandra.integration.vpc.elo7aws.com.br
 batch.cassandra.port=9042
 batch.cassandra.user=
 batch.cassandra.password=

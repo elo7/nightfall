@@ -19,7 +19,7 @@ ext {
         'com.google.guava:guava:18.0'
       ],
     CASSANDRA : "com.datastax.cassandra:cassandra-driver-core:2.1.10",
-    CASSANDRA_MIGRATION : "com.contrastsecurity:cassandra-migration:0.6",
+    CASSANDRA_MIGRATION : "com.contrastsecurity:cassandra-migration:0.5",
     RELATIONAL : 'org.jdbi:jdbi:2.62',
     NETTY_IO : 'io.netty:netty-all:4.0.33.Final',
     METRICS : 'io.dropwizard.metrics:metrics-core:3.1.2',
