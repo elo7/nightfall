@@ -11,7 +11,7 @@ The injection is limited to the driver, that is, you can not perform the injecti
 To compile the project just (integration tests are not performed because of lack of provision thereof):
 
 ```shell
-./gradlew build -PskipIntegration
+gradle build -PskipIntegration
 ```
 
 Learn more about [How It Works](https://github.com/elo7/nightfall/wiki/how-it-works) and [How To Use](https://github.com/elo7/nightfall/wiki/how-to-use)

@@ -20,5 +20,6 @@ The purpose of this sub-project is simply to provide a way to run integration te
 
 * Generate the file ``nightfall.properties`` based on ``nightfall-integration.properties.sample``
 * Enable checkpoints and persistence of offsets
-* Send the configuration file Zookeeper or put it into the classpath.
-* To execute in integration the artifact should be submitted to the a location where can be loaded by Spark.
+* Send the configuration file Zookeeper.
+* To execute in integration the artifact should be submitted to the integration environment.
+* Para execução em integration o artefato deverá ser submetido ao ambiente de integração.

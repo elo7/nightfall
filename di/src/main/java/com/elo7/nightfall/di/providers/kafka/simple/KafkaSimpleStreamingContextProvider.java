@@ -17,7 +17,6 @@ public class KafkaSimpleStreamingContextProvider implements Provider<JavaStreami
 
 	private final JavaStreamContextProvider<?> provider;
 
-	@SuppressWarnings("unchecked")
 	@Inject
 	KafkaSimpleStreamingContextProvider(
 			Set<StreamTaskProcessor> tasks,
