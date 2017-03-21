@@ -44,8 +44,6 @@ public class StreamingConfiguration implements Serializable {
 	private boolean backPressureEnabled = true;
 	@Configuration("stream.max.rate.per.second")
 	private int maxRatePerSecond = 5000;
-	@Configuration("stream.provider.converter")
-	private String streamConverter = "com.elo7.nightfall.di.providers.spark.stream.DataPointStreamContextConverter";
 
 	public Duration getBatchInterval() {
 		return Durations.milliseconds(batchIntervalMS);
@@ -86,9 +84,5 @@ public class StreamingConfiguration implements Serializable {
 	@VisibleForTesting
 	void setWriteAheadLog(boolean writeAheadLog) {
 		this.writeAheadLog = writeAheadLog;
-	}
-
-	public String getStreamConverter() {
-		return streamConverter;
 	}
 }

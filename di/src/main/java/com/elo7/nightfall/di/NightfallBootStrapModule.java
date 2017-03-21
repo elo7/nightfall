@@ -30,7 +30,11 @@ class NightfallBootStrapModule implements BootstrapModule {
 		CompositeConfigurationProvider configurationProvider = new CompositeConfigurationProvider(
 				new SystemConfigurationProvider(),
 				new PropertiesConfigurationProvider(loadProperties));
+		NightfallConfigurations configurations = new NightfallConfigurations(loadProperties);
 
+		binder
+				.bind(NightfallConfigurations.class)
+				.toInstance(configurations);
 		binder
 				.bindConfigurationProvider()
 				.toInstance(configurationProvider);
