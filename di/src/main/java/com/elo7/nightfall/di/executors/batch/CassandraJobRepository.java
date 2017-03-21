@@ -46,7 +46,7 @@ class CassandraJobRepository implements JobHistoryRepository {
 			PreparedStatement statement = session.prepare(QUERY_INSERT_JOB);
 			BoundStatement boundStatement = statement.bind()
 					.setString(APPLICATION, jobHistory.getAppName())
-					.setMap(CONFIGURATIONS, jobHistory.getConfigurations())
+					.setMap(CONFIGURATIONS, jobHistory.getConfigurations().getAllProperties())
 					.setDate(STARTED_AT, jobHistory.getStartedAt())
 					.setDate(FINISHED_AT, jobHistory.getFinishedAt())
 					.setLong(ELAPSED_TIME, jobHistory.getElapseTimeInSeconds())

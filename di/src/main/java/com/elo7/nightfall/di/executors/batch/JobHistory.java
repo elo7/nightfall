@@ -5,23 +5,24 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
+import com.elo7.nightfall.di.NightfallConfigurations;
 import com.elo7.nightfall.di.commons.util.DateConvertionUtils;
 import com.google.common.base.MoreObjects;
 
 public class JobHistory {
 
 	private final String appName;
-	private final Properties configurations;
+	private final NightfallConfigurations configurations;
 	private final LocalDateTime startedAt;
 	private LocalDateTime finishedAt;
 
-	JobHistory(String appName, Properties configurations, LocalDateTime startedAt) {
+	JobHistory(String appName, NightfallConfigurations configurations, LocalDateTime startedAt) {
 		this.appName = appName;
 		this.configurations = configurations;
 		this.startedAt = startedAt;
 	}
 
-	public static JobHistory start(String appName, Properties configurations) {
+	public static JobHistory start(String appName, NightfallConfigurations configurations) {
 		return new JobHistory(appName, configurations, LocalDateTime.now());
 	}
 
@@ -42,7 +43,7 @@ public class JobHistory {
 		return appName;
 	}
 
-	public Properties getConfigurations() {
+	public NightfallConfigurations getConfigurations() {
 		return configurations;
 	}
 

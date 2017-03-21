@@ -39,10 +39,6 @@ class NightfallBootStrapModule implements BootstrapModule {
 				.bindConfigurationProvider()
 				.toInstance(configurationProvider);
 		binder
-				.bind(Properties.class)
-				.annotatedWith(Names.named("ApplicationProperties"))
-				.toInstance(loadProperties);
-		binder
 				.bind(String[].class)
 				.annotatedWith(Names.named("args"))
 				.toInstance(args);

@@ -1,5 +1,7 @@
 package com.elo7.nightfall.di;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -30,6 +32,22 @@ public class NightfallConfigurations implements Serializable {
 
 		return properties.entrySet().stream()
 				.filter(entry -> ((String) entry.getKey()).startsWith(keyPrefix))
-				.collect(Collectors.toMap(entry -> entry.getKey().toString(), entry -> entry.getValue().toString()));
+				.collect(Collectors.toMap(
+						entry -> entry.getKey().toString(),
+						entry -> Strings.emptyToNull(entry.getValue().toString())));
+	}
+
+	public Map<String, String> getAllProperties() {
+		return properties.entrySet().stream()
+				.collect(Collectors.toMap(
+						entry -> entry.getKey().toString(),
+						entry -> Strings.emptyToNull(entry.getValue().toString())));
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("properties", properties)
+				.toString();
 	}
 }
