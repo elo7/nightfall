@@ -1,0 +1,89 @@
+// Publication definitions
+apply plugin: 'net.researchgate.release'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives javadocJar, sourcesJar
+}
+
+signing {
+	sign configurations.archives
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+			// Local repo, for testing proposes
+			// repository(url: "file:///tmp/myRepo/")
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.scopeMappings.with {
+				mappings.clear()
+				addMapping(300, configurations.provided, 'provided')
+				addMapping(300, configurations.compile, 'compile')
+				addMapping(300, configurations.testCompile, 'test')
+			}
+
+			pom.project {
+				name archivesBaseName + '-' + project.name
+				packaging 'jar'
+				description project.description
+				url 'https://github.com/elo7/nightfall'
+
+				scm {
+					connection 'git@github.com:elo7/nightfall.git'
+					developerConnection 'git@github.com:elo7/nightfall.git'
+					url 'https://github.com/elo7/nightfall'
+				}
+
+				licenses {
+					license {
+						name 'The Apache License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
+				developers {
+					developer {
+						id 'elo7-developer'
+						name 'Elo7'
+						email 'tech@elo7.com'
+					}
+					developer {
+						id 'gmcoringa'
+						name 'Fabiano V. Santos'
+						email 'santos.fabianov@gmail.com'
+					}
+					developer {
+						id 'gadsc'
+						name 'Gabriel Correa'
+						email 'gabadsc@gmail.com'
+					}
+				}
+			}
+		}
+	}
+}
+
+// Automatic publication on release
+//afterReleaseBuild.dependsOn uploadArchives

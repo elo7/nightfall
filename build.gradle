@@ -1,107 +1,46 @@
 // Plugins configuration
 buildscript {
-  repositories {
-    mavenLocal()
-    maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
-    maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'net.researchgate:gradle-release:2.1.1'
-  }
+	repositories {
+		mavenLocal()
+		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
+		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'net.researchgate:gradle-release:2.1.1'
+	}
 }
 
 apply plugin: 'net.researchgate.release'
 
 // Projects configuration
 subprojects {
-  apply from: "$rootDir/dependencies.gradle"
-  apply plugin: 'java'
-  apply plugin: 'maven-publish'
+	apply from: "$rootDir/dependencies.gradle"
+	apply plugin: 'java'
 
-  repositories {
-    mavenLocal()
-    maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
-    maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
-    mavenCentral()
-  }
+	repositories {
+		mavenLocal()
+		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
+		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
+		mavenCentral()
+	}
 
-  group = 'com.elo7.nightfall'
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
-  archivesBaseName = 'nightfall'
+	group = 'com.elo7.nightfall'
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	archivesBaseName = 'nightfall'
 
-  configurations {
-    provided
-    compile.extendsFrom provided
-  }
+	configurations {
+		provided
+		compile.extendsFrom provided
+	}
 
-  sourceSets {
-    main { compileClasspath += configurations.provided }
-  }
+	sourceSets {
+		main { compileClasspath += configurations.provided }
+	}
 
-  task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-  }
-
-  task sourcesJar(type: Jar) {
-      classifier = 'sources'
-      from sourceSets.main.allSource
-  }
-
-  artifacts {
-    archives javadocJar, sourcesJar
-  }
-
-  publishing {
-
-    repositories {
-      maven {
-        name 'Artifactory'
-        url artifactory_url
-        credentials {
-            username artifactory_user
-            password artifactory_password
-        }
-      }
-    }
-
-    publications {
-      mavenJava(MavenPublication) {
-        artifactId projectName
-        from components.java
-
-        artifact sourcesJar {
-          classifier "sources"
-        }
-
-        artifact javadocJar {
-          classifier "javadoc"
-        }
-
-        pom.withXml {
-          // Fix scope for provided dependencies, by default gradle maven will generate with compile scope
-          asNode().dependencies.'*'.findAll() {
-            it.scope.text() == 'runtime'  && project.configurations.provided.allDependencies.find { dep ->
-              dep.name == it.artifactId.text()
-            }
-          }.each() {
-            it.scope*.value = 'provided'
-          }
-          // Fix scope for compile dependencies, by default gradle maven will generate with runtime scope
-          asNode().dependencies.'*'.findAll() {
-            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find {
-              dep -> dep.name == it.artifactId.text()
-            }
-          }.each() {
-            it.scope*.value = 'compile'
-          }
-        }
-      }
-    }
-  }
-
-  // Automatic publication on release
-  afterReleaseBuild.dependsOn publish
+	// Release specific configurations
+	if(project.hasProperty("release")) {
+		apply from: "$rootDir/publish.gradle"
+	}
 }

@@ -5,6 +5,10 @@ ext {
   projectName = 'nightfall-di-migrations'
 }
 
+jar {
+  appendix = 'migrations'
+}
+
 dependencies {
   compile libs.CASSANDRA_MIGRATION, libs.LOGBACK
 }
