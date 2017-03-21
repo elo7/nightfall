@@ -38,6 +38,7 @@ public class JavaStreamContextProvider<T> implements Serializable {
 		this.sparkStreamConverter = sparkStreamConverter;
 	}
 
+	@SuppressWarnings("Convert2MethodRef")
 	public JavaStreamingContext getStreamingContext() {
 		Optional<String> checkpoint = configuration.getCheckpointDir();
 
@@ -66,7 +67,6 @@ public class JavaStreamContextProvider<T> implements Serializable {
 		JavaDStream<String> stream = supplier
 				.get(context)
 				.persist(StorageLevel.MEMORY_AND_DISK_SER());
-
 
 		JavaDStream<T> dataPointStream = sparkStreamConverter.convert(stream)
 				.persist(StorageLevel.MEMORY_AND_DISK_SER());
