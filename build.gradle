@@ -2,8 +2,6 @@
 buildscript {
 	repositories {
 		mavenLocal()
-		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
-		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
 		mavenCentral()
 	}
 	dependencies {
@@ -20,9 +18,8 @@ subprojects {
 
 	repositories {
 		mavenLocal()
-		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-release' }
-		maven { url 'http://artifactory.elo7aws.com.br:8081/artifactory/plugins-snapshot' }
 		mavenCentral()
+		maven { url 'https://jcenter.bintray.com' }
 	}
 
 	group = 'com.elo7.nightfall'
@@ -40,7 +37,7 @@ subprojects {
 	}
 
 	// Release specific configurations
-	if(project.hasProperty("release")) {
+	if(project.hasProperty("RELEASE")) {
 		apply from: "$rootDir/publish.gradle"
 	}
 }

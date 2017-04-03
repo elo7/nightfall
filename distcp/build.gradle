@@ -7,7 +7,7 @@ ext {
 apply plugin:'application'
 
 jar {
-  appendix = 'sdistcp'
+  appendix = 'distcp'
   // Fat jar build instructions
   dependsOn configurations.runtime
   from {
