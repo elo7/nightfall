@@ -11,6 +11,9 @@ jar {
 
 dependencies {
   provided libs.COMMONS_LANG, libs.SLF4J, libs.SPARK
-  compile libs.GOVERNATOR, libs.CASSANDRA, libs.NETTY_IO
+  compile libs.GOVERNATOR
+  compile('com.datastax.cassandra:cassandra-driver-core:2.1.10:shaded'){
+  	exclude group: 'io.netty'
+  }
   testCompile libs.TEST
 }
