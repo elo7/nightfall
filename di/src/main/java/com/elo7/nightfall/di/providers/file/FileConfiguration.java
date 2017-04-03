@@ -1,7 +1,6 @@
 package com.elo7.nightfall.di.providers.file;
 
 import com.elo7.nightfall.di.aws.AWSKeys;
-import com.elo7.nightfall.di.providers.file.filter.FakeFileFilter;
 import com.netflix.governator.annotations.Configuration;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -26,8 +25,6 @@ public class FileConfiguration {
 	private String source;
 	@Configuration("file.filter")
 	private String fileFilter;
-	@Configuration("file.filter.class")
-	private String filterClass = FakeFileFilter.class.getName();
 
 	public Optional<AWSKeys> getAWSKeys() {
 		return AWSKeys.create(accessKey, secretKey);
@@ -35,9 +32,5 @@ public class FileConfiguration {
 
 	public String getSource() {
 		return source;
-	}
-
-	public String getFilterClass() {
-		return filterClass;
 	}
 }

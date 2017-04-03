@@ -19,7 +19,6 @@ class DateWindowModule extends AbstractNightfallModule<JavaRDD<String>> {
 	@Inject
 	DateWindowModule(ClasspathScanner scanner, @Named("contextProvider") String provider) {
 		super(scanner, type);
-
 		this.provider = provider;
 	}
 

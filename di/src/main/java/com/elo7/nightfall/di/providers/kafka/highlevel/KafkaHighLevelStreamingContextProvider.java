@@ -17,6 +17,7 @@ public class KafkaHighLevelStreamingContextProvider implements Provider<JavaStre
 
 	private final JavaStreamContextProvider provider;
 
+	@SuppressWarnings("unchecked")
 	@Inject
 	KafkaHighLevelStreamingContextProvider(
 			Set<StreamTaskProcessor> tasks,
@@ -33,6 +34,5 @@ public class KafkaHighLevelStreamingContextProvider implements Provider<JavaStre
 	public JavaStreamingContext get() {
 		return provider.getStreamingContext();
 	}
-
 
 }

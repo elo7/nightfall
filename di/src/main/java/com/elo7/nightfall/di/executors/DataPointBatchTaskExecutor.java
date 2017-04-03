@@ -1,5 +1,6 @@
 package com.elo7.nightfall.di.executors;
 
+import com.elo7.nightfall.di.NightfallConfigurations;
 import com.elo7.nightfall.di.commons.datapoint.DataPoint;
 import com.elo7.nightfall.di.commons.datapoint.DataPointValidator;
 import com.elo7.nightfall.di.executors.batch.JobHistory;
@@ -12,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.Properties;
 import java.util.Set;
 
 public class DataPointBatchTaskExecutor implements TaskExecutor {
@@ -22,14 +21,14 @@ public class DataPointBatchTaskExecutor implements TaskExecutor {
 
 	private final JavaRDD<DataPoint<String>> rdd;
 	private final Set<BatchTaskProcessor> processors;
-	private final Properties configurations;
+	private final NightfallConfigurations configurations;
 	private final JobHistoryRepository repository;
 	private final ReporterSender reporter;
 
 	@Inject
 	DataPointBatchTaskExecutor(JavaRDD<DataPoint<String>> rdd,
 							   Set<BatchTaskProcessor> processors,
-							   @Named("ApplicationProperties") Properties configurations,
+							   NightfallConfigurations configurations,
 							   JobHistoryRepository repository,
 							   ReporterSender reporter) {
 		this.rdd = rdd;
