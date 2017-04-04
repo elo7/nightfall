@@ -26,14 +26,11 @@ uploadArchives {
 		mavenDeployer {
 			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-			// Local repo, for testing proposes
-			// repository(url: "file:///tmp/myRepo/")
-
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+			repository(url: ossrhURL) {
 				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
 
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+			snapshotRepository(url: ossrhSnapshotURL) {
 				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
 
@@ -86,4 +83,4 @@ uploadArchives {
 }
 
 // Automatic publication on release
-//afterReleaseBuild.dependsOn uploadArchives
+afterReleaseBuild.dependsOn uploadArchives
