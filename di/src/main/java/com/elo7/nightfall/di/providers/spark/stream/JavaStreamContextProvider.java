@@ -76,10 +76,7 @@ public class JavaStreamContextProvider<T> implements Serializable {
 			emiter.accept(stream);
 		}
 
-		stream.foreachRDD(rdd -> {
-			reporter.sendReport(rdd.context(), ApplicationType.STREAM);
-		});
-
+		stream.foreachRDD(rdd -> reporter.sendReport(rdd.context(), ApplicationType.STREAM));
 		checkpoint.ifPresent(context::checkpoint);
 
 		return context;
