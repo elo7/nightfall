@@ -3,23 +3,27 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-	}
-	dependencies {
-		classpath 'net.researchgate:gradle-release:2.1.1'
+		jcenter()
 	}
 }
 
-apply plugin: 'net.researchgate.release'
+plugins {
+	id 'net.researchgate.release' version '2.5.0'
+}
 
 // Projects configuration
+allprojects {
+	apply plugin: 'java'
+}
+
+// Sub-projects configuration
 subprojects {
 	apply from: "$rootDir/dependencies.gradle"
-	apply plugin: 'java'
 
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		maven { url 'https://jcenter.bintray.com' }
+		jcenter()
 	}
 
 	group = 'com.elo7.nightfall'
