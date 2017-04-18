@@ -80,6 +80,3 @@ uploadArchives {
 		}
 	}
 }
-
-// Automatic publication on release
-afterReleaseBuild.dependsOn uploadArchives

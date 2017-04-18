@@ -45,3 +45,14 @@ subprojects {
 		apply from: "$rootDir/publish.gradle"
 	}
 }
+
+// Release definitions
+apply plugin: 'net.researchgate.release'
+
+release {
+	buildTasks = []
+}
+// Automatic publication on release
+project.tasks.afterReleaseBuild.dependsOn project.getSubprojects().collect({
+	it.getTasks().getByName("uploadArchives")
+})
