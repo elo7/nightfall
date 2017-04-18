@@ -1,5 +1,4 @@
 // Publication definitions
-apply plugin: 'net.researchgate.release'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
