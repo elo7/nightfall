@@ -5,6 +5,7 @@ import com.elo7.nightfall.di.providers.kafka.topics.CassandraKafkaTopicRepositor
 import com.elo7.nightfall.di.providers.kafka.topics.KafkaTopicRepository;
 import com.google.inject.AbstractModule;
 import com.netflix.governator.guice.lazy.LazySingletonScope;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.spark.streaming.kafka.KafkaCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,23 @@ public class KafkaSimpleModule extends AbstractModule {
 		this.configuration = configuration;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void configure() {
+		boolean offsetPersistentEnabled = configuration.getProperty("kafka.offset.persistent")
+				.map(BooleanUtils::toBoolean)
+				.orElse(false);
+
+		if (offsetPersistentEnabled) {
+			bindPersistentRepository();
+		}
+
+		bind(KafkaCluster.class)
+				.toProvider(KafkaClusterProvider.class)
+				.in(LazySingletonScope.get());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void bindPersistentRepository() {
 		LOGGER.info("Binding Repositories for Kafka Topics");
 		String repositoryClass = configuration
 				.getProperty("kafka.simple.repository.class")
@@ -38,9 +53,5 @@ public class KafkaSimpleModule extends AbstractModule {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Unknown Kafka Topic Repository Implementation: " + repositoryClass, e);
 		}
-
-		bind(KafkaCluster.class)
-				.toProvider(KafkaClusterProvider.class)
-				.in(LazySingletonScope.get());
 	}
 }
