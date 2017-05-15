@@ -11,6 +11,7 @@ The injection is limited to the driver, that is, you can not perform the injecti
 To compile the project just (integration tests are not performed because of lack of provision thereof):
 
 ```shell
+cp di/src/main/resources/nightfall.properties.sample di/src/main/resources/nightfall.properties
 ./gradlew build -PskipIntegration
 ```
 

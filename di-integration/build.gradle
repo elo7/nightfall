@@ -21,7 +21,7 @@ jar {
 
 dependencies {
   provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.SLF4J
-  compile  project(':di')
+  compile  project(':di'), project(':di-providers/kafka-0-8')
   runtime  project(':persistence/cassandra')
   testCompile libs.TEST
 }
