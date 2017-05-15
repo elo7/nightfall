@@ -7,22 +7,22 @@ import java.util.Optional;
 
 public interface PropertyOption<T> extends Serializable {
 
-    String propertyName();
+	String propertyName();
 
-    String description();
+	String description();
 
-    boolean isRequired();
+	boolean isRequired();
 
-    Optional<T> defaultValue();
+	Optional<T> defaultValue();
 
-    T parse(String value);
+	T parse(String value);
 
-    default Option propertyOption() {
-        Option option = new Option(propertyName(), true, description());
+	default Option propertyOption() {
+		Option option = new Option(propertyName(), true, description());
 
-        option.setRequired(isRequired());
-        option.setArgName(propertyName());
+		option.setRequired(isRequired());
+		option.setArgName(propertyName());
 
-        return option;
-    }
+		return option;
+	}
 }

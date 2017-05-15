@@ -1,12 +1,10 @@
 package com.elo7.nightfall.di;
 
-import com.elo7.nightfall.di.executors.MissingExecutorException;
-import com.elo7.nightfall.di.executors.TaskExecutor;
-import com.elo7.nightfall.di.executors.batch.JobHistoryModule;
-import com.elo7.nightfall.di.providers.ExecutorProvider;
-import com.elo7.nightfall.di.providers.reporter.ReporterModule;
-import com.elo7.nightfall.di.tasks.Task;
+import com.elo7.nightfall.di.task.Task;
+import com.elo7.nightfall.di.task.TaskExecutor;
+import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Stage;
 import com.netflix.governator.guice.LifecycleInjector;
 import com.netflix.governator.lifecycle.ClasspathScanner;
@@ -15,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NightfallApplication {
 
@@ -26,19 +26,19 @@ public class NightfallApplication {
 			throw new IllegalArgumentException("source cannot be null");
 		}
 
-		ExecutorProvider provider = getExecutorProvider(source);
-		runExecutor(provider, source.getPackage(), args);
+		runExecutor(getNightfallApplication(source), source.getPackage(), args);
 	}
 
-	private static ExecutorProvider getExecutorProvider(Class<?> source) {
-		return Arrays.stream(source.getAnnotations())
-				.filter(annotation -> annotation.annotationType().isAnnotationPresent(ExecutorProvider.class))
-				.map(annotation -> annotation.annotationType().getAnnotation(ExecutorProvider.class))
-				.findFirst().orElseThrow(MissingExecutorException::new);
+	private static Nightfall getNightfallApplication(Class<?> source) {
+		if (source.isAnnotationPresent(Nightfall.class)) {
+			return source.getAnnotation(Nightfall.class);
+		}
+
+		throw new RuntimeException("Missing Nightfall annotation on " + source.getName());
 	}
 
-	private static void runExecutor(ExecutorProvider provider, Package sourcePackage, String[] args) {
-		Injector injector = createInjector(args, provider, sourcePackage);
+	private static void runExecutor(Nightfall source, Package sourcePackage, String[] args) {
+		Injector injector = createInjector(args, sourcePackage);
 
 		try (LifecycleManager manager = injector.getInstance(LifecycleManager.class)) {
 			manager.start();
@@ -49,25 +49,37 @@ public class NightfallApplication {
 		}
 	}
 
-	@SuppressWarnings("ConfusingArgumentToVarargsMethod")
-	private static Injector createInjector(String[] args, ExecutorProvider provider, Package sourcePackage) {
-
+	private static Injector createInjector(String[] args, Package sourcePackage) {
 		ClasspathScanner scanner = LifecycleInjector.createStandardClasspathScanner(
-				Arrays.asList(NightfallApplication.class.getPackage().getName(), sourcePackage.getName()),
-				Arrays.asList(Task.class, Component.class)
-		);
+				Arrays.asList(
+						NightfallApplication.class.getPackage().getName(), sourcePackage.getName()),
+				Arrays.asList(ModuleProvider.class, Task.class));
+
 		Injector injector = LifecycleInjector
 				.builder()
 				.usingClasspathScanner(scanner)
-				.withModuleClasses(provider.module(), ReporterModule.class, JobHistoryModule.class)
-				.withModuleClasses(provider.additionalModules())
-				.withBootstrapModule(new NightfallBootStrapModule(args, provider.provider()))
+				.withModuleClasses(findModules(scanner))
+				.withBootstrapModule(new NightfallBootStrapModule(args))
 				.inStage(Stage.DEVELOPMENT)
 				.build()
 				.createInjector();
 
 		LOGGER.info("LifecycleInjector started");
-
 		return injector;
 	}
+
+	@SuppressWarnings("unchecked")
+	private static List<Class<? extends Module>> findModules(ClasspathScanner scanner) {
+		LOGGER.debug("Auto-binding modules annotated with ModuleProvider");
+		List<?> modules = scanner.getClasses().stream()
+				.filter(NightfallApplication::moduleCandidate)
+				.collect(Collectors.toList());
+
+		return (List<Class<? extends Module>>) modules;
+	}
+
+	private static boolean moduleCandidate(Class<?> clazz) {
+		return AbstractModule.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(ModuleProvider.class);
+	}
+
 }

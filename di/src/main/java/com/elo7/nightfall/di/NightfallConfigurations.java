@@ -22,7 +22,13 @@ public class NightfallConfigurations implements Serializable {
 	}
 
 	public Optional<String> getProperty(String key) {
-		return Optional.ofNullable(properties.getProperty(key));
+		String property = properties.getProperty(key);
+
+		if (StringUtils.isBlank(property)) {
+			return Optional.empty();
+		}
+
+		return Optional.of(property);
 	}
 
 	public Map<String, String> getPropertiesWithPrefix(String keyPrefix) {

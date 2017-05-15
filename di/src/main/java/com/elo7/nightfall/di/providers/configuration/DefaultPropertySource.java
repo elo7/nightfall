@@ -7,30 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum DefaultPropertySource {
-    SPARTA_CONFIGURATION(new StringOption(
-            "e",
-            "Nightfall configuration path, format: 'zookeeper://host:port,host:port/file/path', "
-                    + "or 'file://file/path'. Defaults to classpath://nightfall.properties",
-            false,
-            "classpath://nightfall.properties"));
+	SPARTA_CONFIGURATION(new StringOption(
+			"e",
+			"Nightfall configuration path, format: 'zookeeper://host:port,host:port/file/path', "
+					+ "or 'file://file/path'. Defaults to classpath://nightfall.properties",
+			false,
+			"classpath://nightfall.properties"));
 
-    private final PropertyOption<?> propertyOption;
+	private final PropertyOption<?> propertyOption;
 
-    DefaultPropertySource(PropertyOption<?> propertyOption) {
-        this.propertyOption = propertyOption;
-    }
+	DefaultPropertySource(PropertyOption<?> propertyOption) {
+		this.propertyOption = propertyOption;
+	}
 
-    public PropertyOption<?> getPropertyOption() {
-        return propertyOption;
-    }
+	public PropertyOption<?> getPropertyOption() {
+		return propertyOption;
+	}
 
-    public static List<PropertyOption<?>> getPropertyOptions() {
-        List<PropertyOption<?>> options = new ArrayList<>();
+	public static List<PropertyOption<?>> getPropertyOptions() {
+		List<PropertyOption<?>> options = new ArrayList<>();
 
-        for (DefaultPropertySource property : DefaultPropertySource.values()) {
-            options.add(property.getPropertyOption());
-        }
+		for (DefaultPropertySource property : DefaultPropertySource.values()) {
+			options.add(property.getPropertyOption());
+		}
 
-        return options;
-    }
+		return options;
+	}
 }
