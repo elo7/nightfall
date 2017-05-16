@@ -1,5 +1,6 @@
-package com.elo7.nightfall.di.task;
+package com.elo7.nightfall.di.executor;
 
+import com.elo7.nightfall.di.task.TaskProcessor;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.slf4j.Logger;

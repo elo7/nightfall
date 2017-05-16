@@ -1,4 +1,4 @@
-package com.elo7.nightfall.di.task;
+package com.elo7.nightfall.di.executor;
 
 import com.google.inject.ImplementedBy;
 
