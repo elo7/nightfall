@@ -1,7 +1,7 @@
 package com.elo7.nightfall.di;
 
 import com.elo7.nightfall.di.task.Task;
-import com.elo7.nightfall.di.task.TaskExecutor;
+import com.elo7.nightfall.di.executor.TaskExecutor;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Module;
