@@ -9,7 +9,7 @@ jar {
 }
 
 dependencies {
-  provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.METRICS, libs.SLF4J
-  compile  libs.JSON, libs.GOVERNATOR, libs.STATSD
+  provided libs.SPARK, libs.COMMONS_CLI, libs.SLF4J
+  compile  libs.JSON, libs.GOVERNATOR
   testCompile libs.TEST
 }

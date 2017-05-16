@@ -6,9 +6,11 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Arrays;
 
 @Task
+@Singleton
 public class TestTaskProcessor implements TaskProcessor {
 
 	private final SparkSession session;
