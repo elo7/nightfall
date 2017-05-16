@@ -11,7 +11,10 @@ ext {
         "org.apache.spark:spark-sql_$SPARK_SCALA_VERSION:$SPARK_VERSION"
     ],
     KAFKA_0_8 : "org.apache.spark:spark-streaming-kafka-0-8_$SPARK_SCALA_VERSION:$SPARK_VERSION",
-    KAFKA_0_10 : "org.apache.spark:spark-streaming-kafka-0-10_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+    KAFKA_0_10 : [
+        "org.apache.spark:spark-streaming-kafka-0-10_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+        "org.apache.spark:spark-sql-kafka-0-10_$SPARK_SCALA_VERSION:$SPARK_VERSION"
+    ],
     COMMONS_CLI :'commons-cli:commons-cli:1.2',
     COMMONS_LANG : 'org.apache.commons:commons-lang3:3.5',
     AWS : ['org.apache.hadoop:hadoop-aws:2.7.1', 'com.amazonaws:aws-java-sdk:1.7.4'],

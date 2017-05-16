@@ -26,10 +26,7 @@ public class DefaultTaskExecutor implements TaskExecutor {
 	public void runTasks() {
 		try {
 			tasks.forEach(TaskProcessor::process);
-
-			if (session.streams().active().length > 0) {
-				session.streams().awaitAnyTermination();
-			}
+			session.streams().awaitAnyTermination();
 		} catch (StreamingQueryException e) {
 			LOGGER.error("Failed to execute Spark Session", e);
 		} finally {
