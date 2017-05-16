@@ -4,23 +4,30 @@ import com.elo7.nightfall.di.NightfallConfigurations;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.streaming.StreamingQueryListener;
 
 class SparkSessionProvider implements Provider<SparkSession> {
 
-	private final NightfallConfigurations configurations;
-
 	@Inject
-	SparkSessionProvider(NightfallConfigurations configurations) {
-		this.configurations = configurations;
-	}
+	private NightfallConfigurations configurations;
+	@Inject(optional = true)
+	private StreamingQueryListener reporterListerner;
 
 	@Override
 	public SparkSession get() {
 		SparkSession.Builder builder = SparkSession.builder();
 
-		configurations.getProperty("spark.application.name").ifPresent(builder::appName);
-		configurations.getProperty("spark.application.master").ifPresent(builder::master);
+		configurations
+				.getPropertiesWithPrefix("spark.")
+				.entrySet()
+				.forEach(entry -> builder.config(entry.getKey(), entry.getValue()));
 
-		return builder.getOrCreate();
+		SparkSession session = builder.getOrCreate();
+
+		if (reporterListerner != null) {
+			session.streams().addListener(reporterListerner);
+		}
+
+		return session;
 	}
 }
