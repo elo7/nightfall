@@ -1,7 +1,7 @@
 package com.elo7.nightfall.di;
 
-import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.executor.TaskExecutor;
+import com.elo7.nightfall.di.task.Task;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -38,7 +38,7 @@ public class NightfallApplication {
 	}
 
 	private static void runExecutor(Nightfall source, Package sourcePackage, String[] args) {
-		Injector injector = createInjector(args, sourcePackage);
+		Injector injector = createInjector(args, sourcePackage, source);
 
 		try (LifecycleManager manager = injector.getInstance(LifecycleManager.class)) {
 			manager.start();
@@ -49,7 +49,7 @@ public class NightfallApplication {
 		}
 	}
 
-	private static Injector createInjector(String[] args, Package sourcePackage) {
+	private static Injector createInjector(String[] args, Package sourcePackage, Nightfall nightfall) {
 		ClasspathScanner scanner = LifecycleInjector.createStandardClasspathScanner(
 				Arrays.asList(
 						NightfallApplication.class.getPackage().getName(), sourcePackage.getName()),
@@ -59,7 +59,7 @@ public class NightfallApplication {
 				.builder()
 				.usingClasspathScanner(scanner)
 				.withModuleClasses(findModules(scanner))
-				.withBootstrapModule(new NightfallBootStrapModule(args))
+				.withBootstrapModule(new NightfallBootStrapModule(args, nightfall.value()))
 				.inStage(Stage.DEVELOPMENT)
 				.build()
 				.createInjector();

@@ -1,8 +1,8 @@
 package com.elo7.nightfall.di.executor;
 
+import com.elo7.nightfall.di.ExecutionMode;
 import com.elo7.nightfall.di.task.TaskProcessor;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,20 +15,21 @@ public class DefaultTaskExecutor implements TaskExecutor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTaskExecutor.class);
 	private final Set<TaskProcessor> tasks;
 	private final SparkSession session;
+	private final ExecutionMode mode;
 
 	@Inject
-	DefaultTaskExecutor(Set<TaskProcessor> tasks, SparkSession session) {
+	DefaultTaskExecutor(Set<TaskProcessor> tasks, SparkSession session, ExecutionMode mode) {
 		this.tasks = tasks;
 		this.session = session;
+		this.mode = mode;
 	}
 
 	@Override
 	public void runTasks() {
 		try {
+			LOGGER.info("Initializing tasks execution.");
 			tasks.forEach(TaskProcessor::process);
-			session.streams().awaitAnyTermination();
-		} catch (StreamingQueryException e) {
-			LOGGER.error("Failed to execute Spark Session", e);
+			mode.afterTasks(session);
 		} finally {
 			session.stop();
 		}

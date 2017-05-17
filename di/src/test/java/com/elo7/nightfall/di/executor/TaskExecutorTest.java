@@ -1,10 +1,11 @@
 package com.elo7.nightfall.di.executor;
 
+import com.elo7.nightfall.di.ExecutionMode;
 import com.elo7.nightfall.di.Nightfall;
 import com.elo7.nightfall.di.NightfallApplication;
 import org.junit.Test;
 
-@Nightfall
+@Nightfall(ExecutionMode.BATCH)
 public class TaskExecutorTest {
 
 	@Test

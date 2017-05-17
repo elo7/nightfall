@@ -15,10 +15,12 @@ class NightfallBootStrapModule implements BootstrapModule {
 
 	private final DefaultConfiguration configuration;
 	private final String[] args;
+	private final ExecutionMode mode;
 
-	NightfallBootStrapModule(String[] args) {
+	NightfallBootStrapModule(String[] args, ExecutionMode mode) {
 		this.args = args;
-		configuration = new DefaultConfiguration(args);
+		this.configuration = new DefaultConfiguration(args);
+		this.mode = mode;
 	}
 
 	@Override
@@ -39,5 +41,8 @@ class NightfallBootStrapModule implements BootstrapModule {
 				.bind(String[].class)
 				.annotatedWith(Names.named("args"))
 				.toInstance(args);
+		binder
+				.bind(ExecutionMode.class)
+				.toInstance(mode);
 	}
 }
