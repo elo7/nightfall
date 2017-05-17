@@ -8,10 +8,14 @@ import org.apache.spark.sql.streaming.StreamingQueryListener;
 
 class SparkSessionProvider implements Provider<SparkSession> {
 
+	private final NightfallConfigurations configurations;
+	private final StreamingQueryListener reporterListener;
+
 	@Inject
-	private NightfallConfigurations configurations;
-	@Inject(optional = true)
-	private StreamingQueryListener reporterListerner;
+	SparkSessionProvider(NightfallConfigurations configurations, StreamingQueryListener reporterListener) {
+		this.configurations = configurations;
+		this.reporterListener = reporterListener;
+	}
 
 	@Override
 	public SparkSession get() {
@@ -23,10 +27,7 @@ class SparkSessionProvider implements Provider<SparkSession> {
 				.forEach(entry -> builder.config(entry.getKey(), entry.getValue()));
 
 		SparkSession session = builder.getOrCreate();
-
-		if (reporterListerner != null) {
-			session.streams().addListener(reporterListerner);
-		}
+		session.streams().addListener(reporterListener);
 
 		return session;
 	}
