@@ -1,4 +1,4 @@
-package com.elo7.nightfall.di.providers.kafka;
+package com.elo7.nightfall.providers.kafka;
 
 import com.elo7.nightfall.di.NightfallConfigurations;
 import org.apache.spark.sql.Dataset;

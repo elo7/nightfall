@@ -1,4 +1,4 @@
-package com.elo7.nightfall.di.providers.kafka;
+package com.elo7.nightfall.providers.kafka;
 
 import java.io.Serializable;
 
