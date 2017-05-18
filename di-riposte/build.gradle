@@ -1,0 +1,15 @@
+description = 'Simple operations through configurations'
+
+ext {
+  projectName = 'nightfall-di-riposte'
+}
+
+jar {
+  appendix = 'di-riposte'
+}
+
+dependencies {
+  compile  project(':di-providers/kafka-0-10')
+  provided libs.SPARK, libs.COMMONS_CLI, libs.AWS
+  testCompile libs.TEST
+}
