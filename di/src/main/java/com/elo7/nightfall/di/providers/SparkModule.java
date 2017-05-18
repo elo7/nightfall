@@ -1,6 +1,7 @@
 package com.elo7.nightfall.di.providers;
 
 import com.elo7.nightfall.di.ModuleProvider;
+import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -35,9 +36,12 @@ class SparkModule extends AbstractModule {
 		LOGGER.info("Binding TaskProcessors");
 		scanner.getClasses()
 				.stream()
-				.filter(TaskProcessor.class::isAssignableFrom)
+				.filter(this::taskFilter)
 				.forEach(clazz -> bindTask(taskBinder, clazz));
+	}
 
+	private boolean taskFilter(Class<?> candidate){
+		return TaskProcessor.class.isAssignableFrom(candidate) && candidate.isAnnotationPresent(Task.class);
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})

@@ -12,9 +12,11 @@ import com.netflix.governator.lifecycle.LifecycleManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class NightfallApplication {
 
@@ -51,8 +53,7 @@ public class NightfallApplication {
 
 	private static Injector createInjector(String[] args, Package sourcePackage, Nightfall nightfall) {
 		ClasspathScanner scanner = LifecycleInjector.createStandardClasspathScanner(
-				Arrays.asList(
-						NightfallApplication.class.getPackage().getName(), sourcePackage.getName()),
+				scanPackages(sourcePackage, nightfall),
 				Arrays.asList(ModuleProvider.class, Task.class));
 
 		Injector injector = LifecycleInjector
@@ -66,6 +67,21 @@ public class NightfallApplication {
 
 		LOGGER.info("LifecycleInjector started");
 		return injector;
+	}
+
+	private static List<String> scanPackages(Package sourcePackage, Nightfall nightfall) {
+		List<String> packages = new ArrayList<>();
+
+		packages.add(NightfallApplication.class.getPackage().getName());
+
+		if (nightfall.scanPackages().length > 0) {
+			Stream.of(nightfall.scanPackages())
+					.forEach(packages::add);
+		} else {
+			packages.add(sourcePackage.getName());
+		}
+
+		return packages;
 	}
 
 	@SuppressWarnings("unchecked")
