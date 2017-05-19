@@ -1,15 +1,15 @@
 description = 'Dependency injection for Spark'
 
 ext {
-  projectName = 'nightfall-di'
+	projectName = 'nightfall-di'
 }
 
 jar {
-  appendix = 'di'
+	appendix = 'di'
 }
 
 dependencies {
-  provided libs.SPARK, libs.COMMONS_CLI, libs.SLF4J
-  compile  libs.JSON, libs.GOVERNATOR
-  testCompile libs.TEST
+	provided libs.SPARK, libs.COMMONS_CLI, libs.SLF4J
+	compile  libs.JSON, libs.GOVERNATOR
+	testCompile libs.TEST
 }

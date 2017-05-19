@@ -21,15 +21,6 @@ subprojects {
 	apply from: "$rootDir/dependencies.gradle"
 	apply plugin: 'maven-publish'
 
-	publishing {
-		publications {
-			maven(MavenPublication) {
-				artifactId project.projectName
-				from components.java
-			}
-		}
-	}
-
 	repositories {
 		mavenLocal()
 		mavenCentral()
@@ -40,6 +31,15 @@ subprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	archivesBaseName = 'nightfall'
+
+	publishing {
+		publications {
+			maven(MavenPublication) {
+				artifactId project.projectName
+				from components.java
+			}
+		}
+	}
 
 	configurations {
 		provided

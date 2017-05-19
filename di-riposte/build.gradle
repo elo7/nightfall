@@ -1,15 +1,23 @@
 description = 'Simple operations through configurations'
 
 ext {
-  projectName = 'nightfall-di-riposte'
+	projectName = 'nightfall-riposte'
 }
 
 jar {
-  appendix = 'di-riposte'
+	appendix = 'riposte'
+	// Fat jar build instructions
+	dependsOn configurations.runtime
+	from {
+		// Exclude provided dependencies and add specific libs
+		(configurations.runtime - configurations.provided).collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
 }
 
 dependencies {
-  compile  project(':di-providers/kafka-0-10')
-  provided libs.SPARK, libs.COMMONS_CLI, libs.AWS
-  testCompile libs.TEST
+	compile  project(':di-providers/kafka-0-10')
+	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS
+	testCompile libs.TEST
 }
