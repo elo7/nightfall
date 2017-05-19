@@ -84,8 +84,8 @@ public class RiposteConfiguration implements Serializable {
 	}
 
 	public Optional<String> writerPath() {
-		if (StringUtils.isNotBlank(readerPath)) {
-			return Optional.of(readerPath);
+		if (StringUtils.isNotBlank(writerPath)) {
+			return Optional.of(writerPath);
 		}
 
 		return Optional.empty();
