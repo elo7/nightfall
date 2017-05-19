@@ -19,6 +19,16 @@ allprojects {
 // Sub-projects configuration
 subprojects {
 	apply from: "$rootDir/dependencies.gradle"
+	apply plugin: 'maven-publish'
+
+	publishing {
+		publications {
+			maven(MavenPublication) {
+				artifactId project.projectName
+				from components.java
+			}
+		}
+	}
 
 	repositories {
 		mavenLocal()
