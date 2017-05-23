@@ -8,6 +8,8 @@ jar {
 	appendix = 'di'
 }
 
+apply from: "$rootDir/shadow-jar.gradle"
+
 dependencies {
 	provided libs.SPARK, libs.COMMONS_CLI, libs.SLF4J
 	compile  libs.JSON, libs.GOVERNATOR

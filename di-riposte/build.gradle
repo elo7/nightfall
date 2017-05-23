@@ -6,15 +6,9 @@ ext {
 
 jar {
 	appendix = 'riposte'
-	// Fat jar build instructions
-	dependsOn configurations.runtime
-	from {
-		// Exclude provided dependencies and add specific libs
-		(configurations.runtime - configurations.provided).collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
 }
+
+apply from: "$rootDir/shadow-jar.gradle"
 
 dependencies {
 	compile  project(':di-providers/kafka-0-10')

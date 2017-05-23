@@ -8,6 +8,8 @@ jar {
 	appendix = 'di-kafka-0_10'
 }
 
+apply from: "$rootDir/shadow-jar.gradle"
+
 dependencies {
 	compile  project(':di'), libs.KAFKA_0_10
 	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.SLF4J

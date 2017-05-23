@@ -1,0 +1,17 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+	classifier = 'shaded'
+	baseName = project.projectName
+	from {
+		// Exclude provided dependencies and add specific libs
+		(project.configurations.runtime - project.configurations.provided).collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+	configurations = []
+	relocate 'org.objectweb.asm', 'shaded.org.objectweb.asm'
+	zip64 true
+}
+
+build.dependsOn shadowJar
