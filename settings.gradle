@@ -1,1 +1,1 @@
-include 'di', 'di-providers/kafka-0-10', 'migrations', 'di-riposte' //, 'di-integration', 'persistence/cassandra', 'persistence/relational', 'distcp', 'examples', 'di-providers/kafka-0-8'
+include 'di', 'di-providers/kafka-0-10', 'migrations', 'riposte' //, 'di-integration', 'persistence/cassandra', 'persistence/relational', 'distcp', 'examples', 'di-providers/kafka-0-8'
