@@ -10,6 +10,8 @@ import java.util.Optional;
 
 class BatchDatasetConsumer implements DatasetConsumer {
 
+	private static final long serialVersionUID = 1L;
+
 	private final RiposteConfiguration configuration;
 
 	@Inject

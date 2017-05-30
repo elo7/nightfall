@@ -4,7 +4,7 @@ ext {
 	SPARK_SCALA_VERSION = "2.11"
 
 	libs = [
-		TEST : ['junit:junit:4.12', 'org.mockito:mockito-core:1.10.19'],
+		TEST : ['junit:junit:4.12', 'org.mockito:mockito-core:2.8.9'],
 		SPARK : [
 			"org.apache.spark:spark-streaming_$SPARK_SCALA_VERSION:$SPARK_VERSION",
 			"org.apache.spark:spark-core_$SPARK_SCALA_VERSION:$SPARK_VERSION",
