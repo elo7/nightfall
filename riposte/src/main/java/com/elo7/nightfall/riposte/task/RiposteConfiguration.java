@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RiposteConfiguration implements Serializable {
 
@@ -45,14 +44,17 @@ public class RiposteConfiguration implements Serializable {
 	}
 
 	public Optional<String[]> query() {
-		if (StringUtils.isNotBlank(queryColumns)) {
-			return Optional.of(Stream
-					.of(queryColumns.split(","))
-					.filter(StringUtils::isNotBlank)
-					.toArray(String[]::new));
+		Map<String, String> columns = configurations.getPropertiesWithPrefix("nightfall.riposte.query.columns.");
+
+		if (columns.isEmpty()) {
+			return Optional.empty();
 		}
 
-		return Optional.empty();
+		return Optional.of(columns
+				.entrySet()
+				.stream()
+				.map(Map.Entry::getValue)
+				.toArray(String[]::new));
 	}
 
 	public Optional<String> filter() {
