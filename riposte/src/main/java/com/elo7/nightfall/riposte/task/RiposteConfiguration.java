@@ -19,6 +19,9 @@ public class RiposteConfiguration implements Serializable {
 
 	private final NightfallConfigurations configurations;
 
+	@Configuration("nightfall.riposte.print_schema")
+	private boolean printSchema = false;
+
 	@NotBlank
 	@Configuration("nightfall.riposte.reader.format")
 	private String readerFormat;
@@ -41,6 +44,10 @@ public class RiposteConfiguration implements Serializable {
 	@Inject
 	RiposteConfiguration(NightfallConfigurations configurations) {
 		this.configurations = configurations;
+	}
+
+	public boolean printSchema() {
+		return printSchema;
 	}
 
 	public Optional<String[]> query() {

@@ -3,11 +3,8 @@ package com.elo7.nightfall.riposte.task;
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
 import com.google.inject.Inject;
-import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-
-import java.util.Optional;
 
 @Task
 class RiposteTask implements TaskProcessor {
@@ -27,6 +24,10 @@ class RiposteTask implements TaskProcessor {
 
 	@Override
 	public void process() {
+		if (configuration.printSchema()) {
+			dataset.printSchema();
+		}
+
 		Dataset<Row> result = applySelect(dataset);
 
 		result = applyFilter(result);
@@ -35,15 +36,15 @@ class RiposteTask implements TaskProcessor {
 		consumer.consume(result);
 	}
 
-	private Dataset<Row> applySelect(Dataset<Row> dataset){
+	private Dataset<Row> applySelect(Dataset<Row> dataset) {
 		return configuration.query().map(dataset::selectExpr).orElse(dataset);
 	}
 
-	private Dataset<Row> applyFilter(Dataset<Row> dataset){
+	private Dataset<Row> applyFilter(Dataset<Row> dataset) {
 		return configuration.filter().map(dataset::filter).orElse(dataset);
 	}
 
-	private Dataset<Row> applyGroupBy(Dataset<Row> dataset){
+	private Dataset<Row> applyGroupBy(Dataset<Row> dataset) {
 		return configuration.groupBy().map(groupBy -> dataset.groupBy(groupBy).count()).orElse(dataset);
 	}
 }
