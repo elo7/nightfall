@@ -23,7 +23,6 @@ class BatchDatasetConsumer implements DatasetConsumer {
 		if (configuration.writerFormat().equalsIgnoreCase("console")) {
 			dataset.show();
 		} else {
-
 			DataFrameWriter<?> writer = dataset
 					.write()
 					.format(configuration.writerFormat())

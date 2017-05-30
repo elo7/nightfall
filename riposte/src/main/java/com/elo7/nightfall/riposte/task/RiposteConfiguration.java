@@ -33,9 +33,9 @@ public class RiposteConfiguration implements Serializable {
 	private String writerPath;
 
 	@Configuration("nightfall.riposte.query.columns")
-	private String queryColumns = "*";
+	private String queryColumns;
 	@Configuration("nightfall.riposte.query.filter")
-	private String queryFilter = "1=1";
+	private String queryFilter;
 	@Configuration("nightfall.riposte.query.group")
 	private String queryGroup;
 
@@ -44,15 +44,23 @@ public class RiposteConfiguration implements Serializable {
 		this.configurations = configurations;
 	}
 
-	public Column[] query() {
-		return Stream
-				.of(queryColumns.split(","))
-				.map(Column::new)
-				.toArray(Column[]::new);
+	public Optional<Column[]> query() {
+		if (StringUtils.isNotBlank(queryColumns)) {
+			return Optional.of(Stream
+					.of(queryColumns.split(","))
+					.map(Column::new)
+					.toArray(Column[]::new));
+		}
+
+		return Optional.empty();
 	}
 
-	public String filter() {
-		return queryFilter;
+	public Optional<String> filter() {
+		if (StringUtils.isNotBlank(queryFilter)) {
+			return Optional.of(queryFilter.trim());
+		}
+
+		return Optional.empty();
 	}
 
 	public Optional<Column> groupBy() {

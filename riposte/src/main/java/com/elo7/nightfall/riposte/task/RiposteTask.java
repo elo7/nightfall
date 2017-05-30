@@ -27,19 +27,23 @@ class RiposteTask implements TaskProcessor {
 
 	@Override
 	public void process() {
-		Dataset<Row> filtered = dataset
-				.select(configuration.query())
-				.filter(configuration.filter());
+		Dataset<Row> result = applySelect(dataset);
 
-		Dataset<Row> grouped = filtered;
-		Optional<Column> groupBy = configuration.groupBy();
+		result = applyFilter(result);
+		result = applyGroupBy(result);
 
-		if (groupBy.isPresent()) {
-			grouped = filtered
-					.groupBy(groupBy.get())
-					.count();
-		}
+		consumer.consume(result);
+	}
 
-		consumer.consume(grouped);
+	private Dataset<Row> applySelect(Dataset<Row> dataset){
+		return configuration.query().map(dataset::select).orElse(dataset);
+	}
+
+	private Dataset<Row> applyFilter(Dataset<Row> dataset){
+		return configuration.filter().map(dataset::filter).orElse(dataset);
+	}
+
+	private Dataset<Row> applyGroupBy(Dataset<Row> dataset){
+		return configuration.groupBy().map(groupBy -> dataset.groupBy(groupBy).count()).orElse(dataset);
 	}
 }
