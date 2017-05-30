@@ -44,12 +44,12 @@ public class RiposteConfiguration implements Serializable {
 		this.configurations = configurations;
 	}
 
-	public Optional<Column[]> query() {
+	public Optional<String[]> query() {
 		if (StringUtils.isNotBlank(queryColumns)) {
 			return Optional.of(Stream
 					.of(queryColumns.split(","))
-					.map(Column::new)
-					.toArray(Column[]::new));
+					.filter(StringUtils::isNotBlank)
+					.toArray(String[]::new));
 		}
 
 		return Optional.empty();
@@ -104,12 +104,10 @@ public class RiposteConfiguration implements Serializable {
 	}
 
 	private Map<String, String> getOptions(String prefix) {
-
 		return configurations.getPropertiesWithPrefix(prefix)
 				.entrySet()
 				.stream()
 				.map(entry -> new Tuple2<>(entry.getKey().replaceFirst(prefix, ""), entry.getValue()))
 				.collect(Collectors.toMap(Tuple2::_1, Tuple2::_2));
-
 	}
 }

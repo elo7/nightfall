@@ -49,12 +49,12 @@ public class RiposteTaskTest {
 
 	@Test
 	public void should_apply_select_when_it_is_present() {
-		Column[] columns = {new Column("col")};
+		String[] columns = {"col"};
 		when(configuration.query()).thenReturn(Optional.of(columns));
 
 		subject.process();
 
-		verify(dataset).select(columns);
+		verify(dataset).selectExpr(columns);
 	}
 
 	@Test

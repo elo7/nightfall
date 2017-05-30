@@ -36,7 +36,7 @@ class RiposteTask implements TaskProcessor {
 	}
 
 	private Dataset<Row> applySelect(Dataset<Row> dataset){
-		return configuration.query().map(dataset::select).orElse(dataset);
+		return configuration.query().map(dataset::selectExpr).orElse(dataset);
 	}
 
 	private Dataset<Row> applyFilter(Dataset<Row> dataset){
