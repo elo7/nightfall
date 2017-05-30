@@ -31,30 +31,22 @@ public class RiposteTaskTest {
 	@Mock
 	private DatasetConsumer consumer;
 	@Mock
+	private DatasetSelect select;
+	@Mock
 	private RelationalGroupedDataset groupedDataset;
 
 	@Before
 	public void setup() {
-		when(configuration.query()).thenReturn(Optional.empty());
+		when(select.apply(dataset)).thenReturn(dataset);
 		when(configuration.filter()).thenReturn(Optional.empty());
 		when(configuration.groupBy()).thenReturn(Optional.empty());
 	}
 
 	@Test
-	public void should_not_apply_select_when_it_is_missing() {
+	public void should_apply_select() {
 		subject.process();
 
-		verify(dataset, never()).select(any(Column[].class));
-	}
-
-	@Test
-	public void should_apply_select_when_it_is_present() {
-		String[] columns = {"col"};
-		when(configuration.query()).thenReturn(Optional.of(columns));
-
-		subject.process();
-
-		verify(dataset).selectExpr(columns);
+		verify(select).apply(dataset);
 	}
 
 	@Test

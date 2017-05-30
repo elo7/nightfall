@@ -14,12 +14,18 @@ class RiposteTask implements TaskProcessor {
 	private final Dataset<Row> dataset;
 	private final RiposteConfiguration configuration;
 	private final DatasetConsumer consumer;
+	private final DatasetSelect select;
 
 	@Inject
-	RiposteTask(@Riposte Dataset<Row> dataset, RiposteConfiguration configuration, DatasetConsumer consumer) {
+	RiposteTask(
+			@Riposte Dataset<Row> dataset,
+			RiposteConfiguration configuration,
+			DatasetConsumer consumer,
+			DatasetSelect select) {
 		this.dataset = dataset;
 		this.configuration = configuration;
 		this.consumer = consumer;
+		this.select = select;
 	}
 
 	@Override
@@ -28,16 +34,12 @@ class RiposteTask implements TaskProcessor {
 			dataset.printSchema();
 		}
 
-		Dataset<Row> result = applySelect(dataset);
+		Dataset<Row> result = select.apply(dataset);
 
 		result = applyFilter(result);
 		result = applyGroupBy(result);
 
 		consumer.consume(result);
-	}
-
-	private Dataset<Row> applySelect(Dataset<Row> dataset) {
-		return configuration.query().map(dataset::selectExpr).orElse(dataset);
 	}
 
 	private Dataset<Row> applyFilter(Dataset<Row> dataset) {
