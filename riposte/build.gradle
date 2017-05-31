@@ -11,7 +11,7 @@ jar {
 apply from: "$rootDir/shadow-jar.gradle"
 
 dependencies {
-	compile  project(':di-providers/kafka-0-10')
+	compile  project(':di')
 	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS
 	testCompile libs.TEST
 }
