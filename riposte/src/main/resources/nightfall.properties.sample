@@ -13,6 +13,4 @@ nightfall.riposte.reader.options.dbtable=(SELECT * from user) as user
 nightfall.riposte.writer.format=console
 
 # Operations
-nightfall.riposte.query.columns=id,name,active,type
-#nightfall.riposte.query.filter=active = 1
-nightfall.riposte.query.group=type
+nightfall.riposte.sql=SELECT type, COUNT(*) AS count FROM dataSet WHERE active = 1 GROUP BY type

@@ -5,27 +5,29 @@ import com.elo7.nightfall.di.task.TaskProcessor;
 import com.google.inject.Inject;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 
 @Task
 class RiposteTask implements TaskProcessor {
 
 	private static final long serialVersionUID = 1L;
+	private static final String VIEW_NAME = "dataSet";
 
 	private final Dataset<Row> dataset;
 	private final RiposteConfiguration configuration;
 	private final DatasetConsumer consumer;
-	private final DatasetSelect select;
+	private final SparkSession session;
 
 	@Inject
 	RiposteTask(
 			@Riposte Dataset<Row> dataset,
 			RiposteConfiguration configuration,
 			DatasetConsumer consumer,
-			DatasetSelect select) {
+			SparkSession session) {
 		this.dataset = dataset;
 		this.configuration = configuration;
 		this.consumer = consumer;
-		this.select = select;
+		this.session = session;
 	}
 
 	@Override
@@ -34,19 +36,7 @@ class RiposteTask implements TaskProcessor {
 			dataset.printSchema();
 		}
 
-		Dataset<Row> result = select.apply(dataset);
-
-		result = applyFilter(result);
-		result = applyGroupBy(result);
-
-		consumer.consume(result);
-	}
-
-	private Dataset<Row> applyFilter(Dataset<Row> dataset) {
-		return configuration.filter().map(dataset::filter).orElse(dataset);
-	}
-
-	private Dataset<Row> applyGroupBy(Dataset<Row> dataset) {
-		return configuration.groupBy().map(groupBy -> dataset.groupBy(groupBy).count()).orElse(dataset);
+		dataset.createOrReplaceTempView(VIEW_NAME);
+		consumer.consume(session.sql(configuration.sql()));
 	}
 }

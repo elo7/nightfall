@@ -4,7 +4,6 @@ import com.elo7.nightfall.di.NightfallConfigurations;
 import com.google.inject.Inject;
 import com.netflix.governator.annotations.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.spark.sql.Column;
 import org.hibernate.validator.constraints.NotBlank;
 import scala.Tuple2;
 
@@ -34,12 +33,9 @@ public class RiposteConfiguration implements Serializable {
 	@Configuration("nightfall.riposte.writer.path")
 	private String writerPath;
 
-	@Configuration("nightfall.riposte.query.columns")
-	private String queryColumns;
-	@Configuration("nightfall.riposte.query.filter")
-	private String queryFilter;
-	@Configuration("nightfall.riposte.query.group")
-	private String queryGroup;
+	@NotBlank
+	@Configuration("nightfall.riposte.sql")
+	private String sql;
 
 	@Inject
 	RiposteConfiguration(NightfallConfigurations configurations) {
@@ -50,34 +46,8 @@ public class RiposteConfiguration implements Serializable {
 		return printSchema;
 	}
 
-	public Optional<String[]> query() {
-		Map<String, String> columns = configurations.getPropertiesWithPrefix("nightfall.riposte.query.columns.");
-
-		if (columns.isEmpty()) {
-			return Optional.empty();
-		}
-
-		return Optional.of(columns
-				.entrySet()
-				.stream()
-				.map(Map.Entry::getValue)
-				.toArray(String[]::new));
-	}
-
-	public Optional<String> filter() {
-		if (StringUtils.isNotBlank(queryFilter)) {
-			return Optional.of(queryFilter.trim());
-		}
-
-		return Optional.empty();
-	}
-
-	public Optional<Column> groupBy() {
-		if (StringUtils.isNotBlank(queryGroup)) {
-			return Optional.of(new Column(queryGroup));
-		}
-
-		return Optional.empty();
+	public String sql() {
+		return sql;
 	}
 
 	public String readerFormat() {
