@@ -12,40 +12,40 @@ import java.util.Properties;
 
 public class ConfigurationProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationProvider.class);
 
-    public static Properties loadProperties(ConfigurationSchema schema) {
-        try {
-            Properties config = new Properties();
-            InputStream properties;
+	public static Properties loadProperties(ConfigurationSchema schema) {
+		try {
+			Properties config = new Properties();
+			InputStream properties;
 
-            switch (schema.getSource()) {
-                case "zookeeper":
-                    LOGGER.info("Loading configuration from Zookeeper: {}", schema);
-                    properties = ZookeeperConfigurationLoader.loadConfiguration(schema);
-                    break;
-                case "file":
-                    properties = new FileInputStream(new File(schema.getPath()));
-                    break;
-                case "classpath":
-                    properties = ClassLoader.getSystemResourceAsStream(schema.getPath());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid source "
-                            + schema.getSource()
-                            + " for Nightfall configuration");
-            }
+			switch (schema.getSource()) {
+				case "zookeeper":
+					LOGGER.info("Loading configuration from Zookeeper: {}", schema);
+					properties = ZookeeperConfigurationLoader.loadConfiguration(schema);
+					break;
+				case "file":
+					properties = new FileInputStream(new File(schema.getPath()));
+					break;
+				case "classpath":
+					properties = ClassLoader.getSystemResourceAsStream(schema.getPath());
+					break;
+				default:
+					throw new IllegalArgumentException("Invalid configuration source {"
+							+ schema.getSource()
+							+ "} for Nightfall configuration");
+			}
 
-            if (properties == null) {
-                throw new IllegalArgumentException("Source " + schema.getSource()
-                        + " not found for Nightfall configuration");
-            }
+			if (properties == null) {
+				throw new IllegalArgumentException("Invalid source schema [" + schema.getSource()
+						+ "] for Nightfall configuration");
+			}
 
-            config.load(properties);
-            return config;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load Nightfall configuration!", e);
-        }
-    }
+			config.load(properties);
+			return config;
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to load Nightfall configuration!", e);
+		}
+	}
 
 }

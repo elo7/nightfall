@@ -22,7 +22,13 @@ public class NightfallConfigurations implements Serializable {
 	}
 
 	public Optional<String> getProperty(String key) {
-		return Optional.ofNullable(properties.getProperty(key));
+		String property = properties.getProperty(key);
+
+		if (StringUtils.isBlank(property)) {
+			return Optional.empty();
+		}
+
+		return Optional.of(property);
 	}
 
 	public Map<String, String> getPropertiesWithPrefix(String keyPrefix) {
@@ -32,6 +38,7 @@ public class NightfallConfigurations implements Serializable {
 
 		return properties.entrySet().stream()
 				.filter(entry -> ((String) entry.getKey()).startsWith(keyPrefix))
+				.filter(entry -> entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString()))
 				.collect(Collectors.toMap(
 						entry -> entry.getKey().toString(),
 						entry -> Strings.emptyToNull(entry.getValue().toString())));
@@ -39,9 +46,10 @@ public class NightfallConfigurations implements Serializable {
 
 	public Map<String, String> getAllProperties() {
 		return properties.entrySet().stream()
+				.filter(entry -> entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString()))
 				.collect(Collectors.toMap(
 						entry -> entry.getKey().toString(),
-						entry -> Strings.emptyToNull(entry.getValue().toString())));
+						entry -> entry.getValue().toString()));
 	}
 
 	@Override

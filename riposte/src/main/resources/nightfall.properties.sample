@@ -1,0 +1,16 @@
+spark.app.name=App Name
+spark.sql.warehouse.dir=build/spark-warehouse
+spark.master=local[2]
+
+# JDBC reader
+nightfall.riposte.reader.format=jdbc
+nightfall.riposte.reader.options.url=jdbc:mysql://localhost/schema
+nightfall.riposte.reader.options.user=root
+nightfall.riposte.reader.options.password=pass
+nightfall.riposte.reader.options.dbtable=(SELECT * from user) as user
+
+# Console Writer
+nightfall.riposte.writer.format=console
+
+# Operations
+nightfall.riposte.sql=SELECT type, COUNT(*) AS count FROM dataSet WHERE active = 1 GROUP BY type

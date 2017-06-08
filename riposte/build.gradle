@@ -1,0 +1,17 @@
+description = 'Simple operations through configurations'
+
+ext {
+	projectName = 'nightfall-riposte'
+}
+
+jar {
+	appendix = 'riposte'
+}
+
+apply from: "$rootDir/shadow-jar.gradle"
+
+dependencies {
+	compile  project(':di')
+	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS
+	testCompile libs.TEST
+}

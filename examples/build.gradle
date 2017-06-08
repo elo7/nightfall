@@ -20,7 +20,7 @@ jar {
 
 dependencies {
   provided libs.SPARK, libs.AWS, libs.SLF4J
-  compile  project(':di')
+  compile  project(':di'), project(':di-providers/kafka-0-8')
   testCompile libs.TEST
 }
 

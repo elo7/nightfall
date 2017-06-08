@@ -1,21 +1,22 @@
 package com.elo7.nightfall.di.providers.reporter;
 
-import com.elo7.nightfall.di.NightfallConfigurations;
-import com.elo7.nightfall.di.providers.reporter.console.ConsoleReporterFactory;
+import com.elo7.nightfall.di.ModuleProvider;
 import com.google.inject.AbstractModule;
 import com.netflix.governator.guice.lazy.LazySingletonScope;
+import org.apache.spark.sql.streaming.StreamingQueryListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-public class ReporterModule extends AbstractModule {
+@ModuleProvider
+class ReporterModule extends AbstractModule {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReporterModule.class);
-	private final NightfallConfigurations configuration;
+	private final ReporterConfiguration configuration;
 
 	@Inject
-	ReporterModule(NightfallConfigurations configuration) {
+	ReporterModule(final ReporterConfiguration configuration) {
 		this.configuration = configuration;
 	}
 
@@ -23,17 +24,20 @@ public class ReporterModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		LOGGER.info("Binding Implementations for reporters");
-		String reporterClass = configuration
-				.getProperty("reporter.class")
-				.orElse(ConsoleReporterFactory.class.getName());
+		if (configuration.isReporterEnabled()) {
+			String reporterClass = configuration.getReporterClass();
 
-		try {
-			Class clazz = ReporterFactory.class;
-			bind(clazz)
-					.to(Class.forName(reporterClass))
+			try {
+				bind(StreamingQueryListener.class)
+						.to((Class<? extends StreamingQueryListener>) Class.forName(configuration.getReporterClass()))
+						.in(LazySingletonScope.get());
+			} catch (ClassNotFoundException e) {
+				throw new UnknownReporterFactoryException("Unknown ReporterFactory Implementation: " + reporterClass, e);
+			}
+		} else {
+			bind(StreamingQueryListener.class)
+					.to(DisabledReporter.class)
 					.in(LazySingletonScope.get());
-		} catch (ClassNotFoundException e) {
-			throw new UnknownReporterFactoryException("Unknown ReporterFactory Implementation: " + reporterClass, e);
 		}
 	}
 }

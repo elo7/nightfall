@@ -9,6 +9,7 @@ buildscript {
 
 plugins {
 	id 'net.researchgate.release' version '2.5.0'
+	id 'com.github.johnrengelman.shadow' version '2.0.0'
 }
 
 // Projects configuration
@@ -19,6 +20,7 @@ allprojects {
 // Sub-projects configuration
 subprojects {
 	apply from: "$rootDir/dependencies.gradle"
+	apply plugin: 'maven-publish'
 
 	repositories {
 		mavenLocal()
@@ -30,6 +32,15 @@ subprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	archivesBaseName = 'nightfall'
+
+	publishing {
+		publications {
+			maven(MavenPublication) {
+				artifactId project.projectName
+				from components.java
+			}
+		}
+	}
 
 	configurations {
 		provided

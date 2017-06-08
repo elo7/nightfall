@@ -1,29 +1,34 @@
 // Dependencies
 ext {
-  SPARK_VERSION = "1.6.3"
+	SPARK_VERSION = "2.1.1"
+	SPARK_SCALA_VERSION = "2.11"
 
-  libs = [
-    TEST : ['junit:junit:4.12', 'org.mockito:mockito-core:1.10.19'],
-    SPARK : [
-        "org.apache.spark:spark-core_2.10:$SPARK_VERSION",
-        "org.apache.spark:spark-streaming_2.10:$SPARK_VERSION",
-        "org.apache.spark:spark-streaming-kafka_2.10:$SPARK_VERSION"
-      ],
-    COMMONS_CLI :'commons-cli:commons-cli:1.2',
-    COMMONS_LANG : 'org.apache.commons:commons-lang3:3.3.2',
-    AWS : ['org.apache.hadoop:hadoop-aws:2.7.1', 'com.amazonaws:aws-java-sdk:1.7.4'],
-    JSON : 'com.google.code.gson:gson:2.3.1',
-    SLF4J : 'org.slf4j:slf4j-api:1.7.10',
-    GOVERNATOR : [
-        'com.netflix.governator:governator:1.9.3',
-        'com.google.guava:guava:18.0'
-      ],
-    CASSANDRA : "com.datastax.cassandra:cassandra-driver-core:2.1.10",
-    CASSANDRA_MIGRATION : "com.contrastsecurity:cassandra-migration:0.6",
-    RELATIONAL : 'org.jdbi:jdbi:2.62',
-    NETTY_IO : 'io.netty:netty-all:4.0.33.Final',
-    METRICS : 'io.dropwizard.metrics:metrics-core:3.1.2',
-    STATSD : 'com.readytalk:metrics3-statsd:4.1.0',
-    LOGBACK : ["ch.qos.logback:logback-core:1.1.3", "ch.qos.logback:logback-classic:1.1.3"]
-  ]
+	libs = [
+		TEST : ['junit:junit:4.12', 'org.mockito:mockito-core:2.8.9'],
+		SPARK : [
+			"org.apache.spark:spark-streaming_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+			"org.apache.spark:spark-core_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+			"org.apache.spark:spark-sql_$SPARK_SCALA_VERSION:$SPARK_VERSION"
+		],
+		KAFKA_0_8 : "org.apache.spark:spark-streaming-kafka-0-8_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+		KAFKA_0_10 : [
+			"org.apache.spark:spark-streaming-kafka-0-10_$SPARK_SCALA_VERSION:$SPARK_VERSION",
+			"org.apache.spark:spark-sql-kafka-0-10_$SPARK_SCALA_VERSION:$SPARK_VERSION"
+		],
+		COMMONS_CLI :'commons-cli:commons-cli:1.2',
+		COMMONS_LANG : 'org.apache.commons:commons-lang3:3.5',
+		AWS : ['org.apache.hadoop:hadoop-aws:2.7.1', 'com.amazonaws:aws-java-sdk:1.7.4'],
+		JSON : 'com.google.code.gson:gson:2.3.1',
+		SLF4J : 'org.slf4j:slf4j-api:1.7.16',
+		GOVERNATOR : [
+			'com.netflix.governator:governator:1.9.3',
+			'com.google.guava:guava:18.0'
+		  ],
+		CASSANDRA : "com.datastax.cassandra:cassandra-driver-core:2.1.10",
+		CASSANDRA_SHADED : "com.datastax.cassandra:cassandra-driver-core:2.1.10:shaded",
+		CASSANDRA_MIGRATION : "com.contrastsecurity:cassandra-migration:0.6",
+		RELATIONAL : 'org.jdbi:jdbi:2.62',
+		STATSD : 'com.readytalk:metrics3-statsd:4.1.0',
+		LOGBACK : ["ch.qos.logback:logback-core:1.1.3", "ch.qos.logback:logback-classic:1.1.3"]
+	]
 }
