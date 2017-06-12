@@ -6,15 +6,17 @@ import com.google.inject.Provider;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryListener;
 
+import java.util.Set;
+
 class SparkSessionProvider implements Provider<SparkSession> {
 
 	private final NightfallConfigurations configurations;
-	private final StreamingQueryListener reporterListener;
+	private final Set<StreamingQueryListener> reporterListeners;
 
 	@Inject
-	SparkSessionProvider(NightfallConfigurations configurations, StreamingQueryListener reporterListener) {
+	SparkSessionProvider(NightfallConfigurations configurations, Set<StreamingQueryListener> reporterListeners) {
 		this.configurations = configurations;
-		this.reporterListener = reporterListener;
+		this.reporterListeners = reporterListeners;
 	}
 
 	@Override
@@ -27,7 +29,7 @@ class SparkSessionProvider implements Provider<SparkSession> {
 				.forEach(entry -> builder.config(entry.getKey(), entry.getValue()));
 
 		SparkSession session = builder.getOrCreate();
-		session.streams().addListener(reporterListener);
+		reporterListeners.forEach(session.streams()::addListener);
 
 		return session;
 	}

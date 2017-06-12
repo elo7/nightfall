@@ -1,10 +1,12 @@
-package com.elo7.nightfall.di.providers.reporter.console;
+package com.elo7.nightfall.di.providers.reporter;
 
+import com.elo7.nightfall.di.Component;
 import org.apache.spark.sql.streaming.StreamingQueryListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ConsoleReporter extends StreamingQueryListener {
+@Component
+class ConsoleReporter extends StreamingQueryListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReporter.class);
 
