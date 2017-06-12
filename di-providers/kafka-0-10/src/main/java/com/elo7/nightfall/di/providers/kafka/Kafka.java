@@ -1,4 +1,4 @@
-package com.elo7.nightfall.providers.kafka;
+package com.elo7.nightfall.di.providers.kafka;
 
 import com.google.inject.BindingAnnotation;
 
