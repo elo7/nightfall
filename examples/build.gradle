@@ -8,24 +8,16 @@ apply plugin:'application'
 
 jar {
   appendix = 'examples'
-  // Fat jar build instructions
-  dependsOn configurations.runtime
-  from {
-    // Exclude provided dependencies
-    (configurations.runtime - configurations.provided).collect {
-      it.isDirectory() ? it : zipTree(it)
-    }
-  }
 }
 
 dependencies {
   provided libs.SPARK, libs.AWS, libs.SLF4J
-  compile  project(':di'), project(':di-providers/kafka-0-8')
+  compile  project(':di'), project(':di-providers/kafka-0-10')
   testCompile libs.TEST
 }
 
 // Run configurations
-applicationDefaultJvmArgs = ["-Dspark.app.name=NightfallDistcp", "-Dspark.master=local[4]"]
+applicationDefaultJvmArgs = ["-Dspark.app.name=NightfallExample", "-Dspark.master=local[2]"]
 run {
   if ( project.hasProperty('runArgs') ) {
     args project.runArgs.split(" ")
