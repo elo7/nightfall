@@ -31,7 +31,7 @@ class SparkModule extends AbstractModule {
 	private final NightfallConfigurations configurations;
 
 	@Inject
-	SparkModule(final ClasspathScanner scanner, ExecutionMode mode, NightfallConfigurations configurations) {
+	SparkModule(ClasspathScanner scanner, ExecutionMode mode, NightfallConfigurations configurations) {
 		this.scanner = scanner;
 		this.mode = mode;
 		this.configurations = configurations;

@@ -3,11 +3,13 @@ package com.elo7.nightfall.riposte.task;
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 @Task
+@Singleton
 class RiposteTask implements TaskProcessor {
 
 	private static final long serialVersionUID = 1L;

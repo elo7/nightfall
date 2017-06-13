@@ -2,11 +2,11 @@ package com.elo7.nightfall.di.executor;
 
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Arrays;
 
 @Task
