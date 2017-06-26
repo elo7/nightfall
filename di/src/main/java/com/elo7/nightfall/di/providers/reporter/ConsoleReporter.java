@@ -11,7 +11,7 @@ class ConsoleReporter extends StreamingQueryListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReporter.class);
 
 	@Override
-	public void onQueryStarted(final QueryStartedEvent queryStartedEvent) {
+	public void onQueryStarted(QueryStartedEvent queryStartedEvent) {
 		LOGGER.info(
 				"Started query event [name: {}, id: {}, runId: {}].",
 				queryStartedEvent.name(),
@@ -20,12 +20,12 @@ class ConsoleReporter extends StreamingQueryListener {
 	}
 
 	@Override
-	public void onQueryProgress(final QueryProgressEvent queryProgressEvent) {
+	public void onQueryProgress(QueryProgressEvent queryProgressEvent) {
 		LOGGER.info("Query progress: {}.", queryProgressEvent);
 	}
 
 	@Override
-	public void onQueryTerminated(final QueryTerminatedEvent queryTerminatedEvent) {
+	public void onQueryTerminated(QueryTerminatedEvent queryTerminatedEvent) {
 		LOGGER.info("Query terminated: [id: {}, runId: {}]", queryTerminatedEvent.id(), queryTerminatedEvent.runId());
 
 		if (queryTerminatedEvent.exception().isDefined()) {

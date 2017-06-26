@@ -14,3 +14,8 @@ nightfall.riposte.writer.format=console
 
 # Operations
 nightfall.riposte.sql=SELECT type, COUNT(*) AS count FROM dataSet WHERE active = 1 GROUP BY type
+
+# StatsD Reporter
+com.elo7.nightfall.di.providers.reporter.statsd.StatsDReporter=true
+nightfall.statsd.prefix=spark
+nightfall.statsd.host=localhost
