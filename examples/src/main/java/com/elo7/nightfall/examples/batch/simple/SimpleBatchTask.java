@@ -1,4 +1,4 @@
-package com.elo7.nightfall.di.executor;
+package com.elo7.nightfall.examples.batch.simple;
 
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
@@ -11,12 +11,14 @@ import java.util.Arrays;
 
 @Task
 @Singleton
-public class TestTaskProcessor implements TaskProcessor {
+public class SimpleBatchTask implements TaskProcessor {
+
+	private static final long serialVersionUID = 1L;
 
 	private final SparkSession session;
 
 	@Inject
-	TestTaskProcessor(final SparkSession session) {
+	SimpleBatchTask(SparkSession session) {
 		this.session = session;
 	}
 

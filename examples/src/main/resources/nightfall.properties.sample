@@ -1,60 +1,10 @@
-# Kafka Consumer
-#kafka.brokers=localhost:9092
-#kafka.topics=sample_events
+# Spark
+spark.app.name=NightfallExamples
+spark.master=local[2]
 
-# Kafka Offset
-#kafka.offset.persistent=false
-#kafka.cassandra.hosts=localhost
-#kafka.cassandra.keyspace=kafka
-#kafka.cassandra.auto.migration=false
-#kafka.cassandra.user=
-#kafka.cassandra.password=
-#kafka.cassandra.datacenter=
+# Kafka
+spark.kafka.subscribe=events
+spark.kafka.kafka.bootstrap.servers=localhost:9092
 
-# Stream Configurations
-#stream.batch.interval.ms=15000
-#stream.provider.converter=com.elo7.nightfall.di.providers.spark.stream.DataPointStreamContextConverter
-#stream.checkpoint.directory=/tmp/examples/HelloWorldJob
-
-# Monitoring config
-#reporter.statsd.host=localhost
-#reporter.statsd.port=8125
-#reporter.statsd.prefix=dev.spark
-#reporter.enabled=false
-#reporter.class=com.elo7.nightfall.di.providers.reporter.jmx.JMXReporterFactory
-#reporter.class=com.elo7.nightfall.di.providers.reporter.statsd.StatsDReporterFactory
-#reporter.class=com.elo7.nightfall.di.providers.reporter.console.ConsoleReporterFactory
-
-# Relational Configuration
-# Data Source
-database.url=jdbc:postgresql://localhost:5432/example
-database.user=developer
-database.pass=
-database.driver.class=org.postgresql.Driver
-
-# Cassandra Configuration
-# Cassandra
-cassandra.hosts=localhost
-cassandra.port=9042
-cassandra.keyspace=example
-cassandra.user=
-cassandra.password=
-cassandra.datacenter=
-
-# Batch Configuration
-# File Configuration
-file.s3.access.key=
-file.s3.secret.key=
-file.source=/tmp/test
-
-# Batch
-batch.history.enabled=false
-
-# Batch - Job History
-batch.cassandra.hosts=localhost
-batch.cassandra.port=9042
-batch.cassandra.user=
-batch.cassandra.password=
-batch.cassandra.keyspace=kafka
-batch.cassandra.datacenter=
-batch.history.ttl.days=7
+# Console Reporter
+com.elo7.nightfall.di.providers.reporter.ConsoleReporter=true

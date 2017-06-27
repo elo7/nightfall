@@ -1,4 +1,4 @@
-package com.elo7.nightfall.di.executor;
+package com.elo7.nightfall.examples.batch.injection;
 
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
@@ -11,18 +11,22 @@ import java.util.Arrays;
 
 @Task
 @Singleton
-public class TestTaskProcessor implements TaskProcessor {
+public class MyBeanExampleTask implements TaskProcessor {
+
+	private static final long serialVersionUID = 1L;
 
 	private final SparkSession session;
+	private final MyBean myBean;
 
 	@Inject
-	TestTaskProcessor(final SparkSession session) {
+	public MyBeanExampleTask(MyBean myBean, SparkSession session) {
+		this.myBean = myBean;
 		this.session = session;
 	}
 
 	@Override
 	public void process() {
 		session.createDataset(Arrays.asList("input 1", "input 2", "invalid input"), Encoders.STRING())
-				.show();
+				.foreach(myBean::log);
 	}
 }

@@ -54,7 +54,7 @@ public class NightfallApplication {
 	private static Injector createInjector(String[] args, Package sourcePackage, Nightfall nightfall) {
 		ClasspathScanner scanner = LifecycleInjector.createStandardClasspathScanner(
 				scanPackages(sourcePackage, nightfall),
-				Arrays.asList(ModuleProvider.class, Task.class));
+				Arrays.asList(ModuleProvider.class, Task.class, Component.class));
 
 		Injector injector = LifecycleInjector
 				.builder()
