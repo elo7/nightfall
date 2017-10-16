@@ -60,11 +60,11 @@ public class KafkaOffsetRepository implements AutoCloseable {
 		connection.getSession().execute(statement).all().stream()
 				.filter(row -> topics.contains(row.getString(TOPIC)))
 				.collect(Collectors.groupingBy(row -> row.getString(TOPIC)))
-				.entrySet().forEach(entry -> {
-			Map<String, Long> values = new HashMap<>();
-			entry.getValue().forEach(row -> values.put(row.getString(PARTITION), row.getLong(UNTIL_OFFSET)));
-			result.put(entry.getKey(), values);
-		});
+				.forEach((key, value) -> {
+					Map<String, Long> values = new HashMap<>();
+					value.forEach(row -> values.put(row.getString(PARTITION), row.getLong(UNTIL_OFFSET)));
+					result.put(key, values);
+				});
 
 		return result;
 	}

@@ -5,6 +5,7 @@ ext {
 }
 
 apply plugin:'application'
+apply from: "$rootDir/shadow-jar.gradle"
 
 jar {
   appendix = 'examples'
