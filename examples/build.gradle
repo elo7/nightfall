@@ -13,7 +13,8 @@ jar {
 
 dependencies {
   provided libs.SPARK, libs.AWS, libs.SLF4J
-  compile  project(':di'), project(':di-providers/kafka-0-10')
+  compile project(':di'), project(':di-providers/kafka-0-10')
+  runtime libs.CASSANDRA_SPARK
   testCompile libs.TEST
 }
 

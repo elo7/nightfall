@@ -9,7 +9,6 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.elo7.nightfall.di.providers.kafka.cassandra.CassandraConfiguration;
 import com.elo7.nightfall.di.providers.kafka.cassandra.CassandraConnection;
 import com.elo7.nightfall.di.providers.kafka.cassandra.CassandraConnectionFactory;
-import org.apache.spark.streaming.kafka010.OffsetRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public class KafkaOffsetRepository implements AutoCloseable {
 				.collect(Collectors.groupingBy(row -> row.getString(TOPIC)))
 				.forEach((key, value) -> {
 					Map<String, Long> values = new HashMap<>();
-					value.forEach(row -> values.put(row.getString(PARTITION), row.getLong(UNTIL_OFFSET)));
+					value.forEach(row -> values.put(String.valueOf(row.getInt(PARTITION)), row.getLong(UNTIL_OFFSET)));
 					result.put(key, values);
 				});
 
