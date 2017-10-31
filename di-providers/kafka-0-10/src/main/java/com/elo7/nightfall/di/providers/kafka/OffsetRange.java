@@ -1,5 +1,7 @@
 package com.elo7.nightfall.di.providers.kafka;
 
+import com.google.common.base.Objects;
+
 public class OffsetRange {
 
 	private final String topic;
@@ -28,5 +30,21 @@ public class OffsetRange {
 
 	public long untilOffset() {
 		return untilOffset;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		final OffsetRange that = (OffsetRange) o;
+		return partition == that.partition &&
+				fromOffset == that.fromOffset &&
+				untilOffset == that.untilOffset &&
+				Objects.equal(topic, that.topic);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(topic, partition, fromOffset, untilOffset);
 	}
 }
