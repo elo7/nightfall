@@ -67,6 +67,6 @@ public class KafkaDatasetBuilder {
 			return Collections.emptySet();
 		}
 
-		return Stream.of(topicList.split(",")).collect(Collectors.toSet());
+		return Stream.of(topicList.split(",")).map(String::trim).collect(Collectors.toSet());
 	}
 }

@@ -15,5 +15,5 @@ dependencies {
 	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.SLF4J
 	// Provided due lack of support for optional dependencies from gradle: https://issues.gradle.org/browse/GRADLE-1749
 	compileOnly libs.CASSANDRA_SPARK
-	testCompile libs.TEST
+	testCompile libs.TEST, libs.CASSANDRA_SPARK
 }
