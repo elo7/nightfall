@@ -61,7 +61,7 @@ public class KafkaDatasetBuilder {
 	}
 
 	private Optional<String> startingOffset(Set<String> topics){
-		boolean startingOffsetFromRepository = BooleanUtils.toBoolean(configurations.get("startingOffsets.fromRepository"));
+		boolean startingOffsetFromRepository = BooleanUtils.toBoolean(configurations.get("persistent.startingOffsets.fromRepository"));
 
 		if (!startingOffsetFromRepository || StringUtils.isNotBlank(configurations.get("startingOffsets"))){
 			return Optional.empty();

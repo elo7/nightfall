@@ -49,7 +49,7 @@ public class KafkaDatasetBuilderTest {
 		when(session.sparkContext().appName()).thenReturn(APP);
 
 		configurations = new HashMap<>();
-		configurations.put("startingOffsets.fromRepository", "true");
+		configurations.put("persistent.startingOffsets.fromRepository", "true");
 		subject = new KafkaDatasetBuilder(session, configurations);
 	}
 
@@ -143,7 +143,7 @@ public class KafkaDatasetBuilderTest {
 	@Test
 	public void shouldNotSetStartingOffSetsWhenIsFoundOnRepositoryAndOffsetFromRepositoryIsDisabled() {
 		configurations.put("subscribe", "topic1,topic2");
-		configurations.put("startingOffsets.fromRepository", "false");
+		configurations.put("persistent.startingOffsets.fromRepository", "false");
 
 		subject.withPersistentOffsets(repository, listener).build();
 
