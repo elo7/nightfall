@@ -2,6 +2,8 @@ package com.elo7.nightfall.di.providers.kafka;
 
 import org.apache.spark.sql.streaming.StreamingQueryListener;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class KafkaOffsetPersistentListener extends StreamingQueryListener {
@@ -23,12 +25,17 @@ public class KafkaOffsetPersistentListener extends StreamingQueryListener {
 
 	@Override
 	public void onQueryProgress(QueryProgressEvent queryProgressEvent) {
-		Stream.of(queryProgressEvent.progress().sources())
+		List<OffsetRange> offsetRanges = Stream.of(queryProgressEvent.progress().sources())
 				// There are always an ending offset, but the number of input rows indicate when there was some processing
 				.filter(source -> source.numInputRows() > 0)
 				.filter(source -> source.description().startsWith(KAFKA_SOURCE_PREFIX))
 				.map(source -> offsetRangeConverter.apply(source.startOffset(), source.endOffset()))
-				.forEach(offsetRanges -> repository.persistTopics(offsetRanges, application));
+				.flatMap(List::stream)
+				// Some partitions and/or topics may not consume anything
+				.filter(OffsetRange::wasConsumed)
+				.collect(Collectors.toList());
+
+		repository.persistTopics(offsetRanges, application);
 	}
 
 	@Override

@@ -32,6 +32,10 @@ public class OffsetRange {
 		return untilOffset;
 	}
 
+	public boolean wasConsumed(){
+		return untilOffset > fromOffset;
+	}
+
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o) return true;

@@ -49,6 +49,7 @@ public class KafkaDatasetBuilderTest {
 		when(session.sparkContext().appName()).thenReturn(APP);
 
 		configurations = new HashMap<>();
+		configurations.put("startingOffsets.fromRepository", "true");
 		subject = new KafkaDatasetBuilder(session, configurations);
 	}
 
@@ -114,7 +115,7 @@ public class KafkaDatasetBuilderTest {
 	}
 
 	@Test
-	public void shouldNotSetStartingOffSetsWhenNoneIsFoundOnRepository() {
+	public void shouldNotSetStartingOffSetsWhenNoneIsFoundOnRepositoryAndOffsetFromRepositoryIsEnabled() {
 		configurations.put("subscribe", "topic1,topic2");
 		when(repository.findTopicOffset(anySet(), anyString())).thenReturn(Collections.emptyMap());
 
@@ -124,7 +125,7 @@ public class KafkaDatasetBuilderTest {
 	}
 
 	@Test
-	public void shouldSetStartingOffSetsWhenIsFoundOnRepository() {
+	public void shouldSetStartingOffSetsWhenIsFoundOnRepositoryAndOffsetFromRepositoryIsEnabled() {
 		configurations.put("subscribe", "topic1,topic2");
 		Map<String, Map<String, Long>> startingOffset = new HashMap<>();
 
@@ -137,6 +138,18 @@ public class KafkaDatasetBuilderTest {
 
 		verify(kafka).option(eq("subscribe"), anyString());
 		verify(kafka).option("startingOffsets", "{\"topic1\":{\"0\":1},\"topic2\":{\"1\":11}}");
+	}
+
+	@Test
+	public void shouldNotSetStartingOffSetsWhenIsFoundOnRepositoryAndOffsetFromRepositoryIsDisabled() {
+		configurations.put("subscribe", "topic1,topic2");
+		configurations.put("startingOffsets.fromRepository", "false");
+
+		subject.withPersistentOffsets(repository, listener).build();
+
+		verify(repository, never()).findTopicOffset(anySet(), anyString());
+		verify(kafka).option(eq("subscribe"), anyString());
+		verify(kafka, never()).option(eq("startingOffsets"), anyString());
 	}
 
 }
