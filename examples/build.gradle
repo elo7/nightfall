@@ -1,33 +1,18 @@
 description = 'Nightfall examples'
 
 ext {
-  projectName = 'nightfall-examples'
+	projectName = 'nightfall-examples'
 }
-
-apply plugin:'application'
-apply from: "$rootDir/shadow-jar.gradle"
 
 jar {
-  appendix = 'examples'
+	appendix = 'examples'
 }
+
+apply from: "$rootDir/shadow-jar.gradle"
 
 dependencies {
-  provided libs.SPARK, libs.AWS, libs.SLF4J
-  compile project(':di'), project(':di-providers/kafka-0-10')
-  runtime libs.CASSANDRA_SPARK
-  testCompile libs.TEST
-}
-
-// Run configurations
-applicationDefaultJvmArgs = ["-Dspark.app.name=NightfallExample", "-Dspark.master=local[2]"]
-run {
-  if ( project.hasProperty('runArgs') ) {
-    args project.runArgs.split(" ")
-  }
-
-  if ( project.hasProperty('mainClass') ) {
-    mainClassName =  project.mainClass
-  } else {
-    mainClassName = "com.elo7.nightfall.examples.helloworld.HelloWorldJob"
-  }
+	provided libs.SPARK, libs.AWS, libs.SLF4J
+	compile project(':di'), project(':di-providers/kafka-0-10')
+	runtime libs.CASSANDRA_SPARK
+	testCompile libs.TEST
 }
