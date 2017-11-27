@@ -84,6 +84,6 @@ public class KafkaDatasetBuilder {
 			return Collections.emptySet();
 		}
 
-		return Stream.of(topicList.split(",")).map(String::trim).collect(Collectors.toSet());
+		return Stream.of(topicList.split(",")).map(String::trim).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
 	}
 }

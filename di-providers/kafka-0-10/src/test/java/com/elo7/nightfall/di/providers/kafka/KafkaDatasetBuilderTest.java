@@ -103,6 +103,17 @@ public class KafkaDatasetBuilderTest {
 	}
 
 	@Test
+	public void shouldRemoveEmptyTopicNamesFromTopicListOfSubscribeOption() {
+		Set<String> topics = Stream.of("topic1", "topic2").collect(Collectors.toSet());
+		configurations.put("subscribe", "topic1, ,topic2 ");
+		when(repository.findTopicOffset(anySet(), anyString())).thenReturn(Collections.emptyMap());
+
+		subject.withPersistentOffsets(repository, listener).build();
+
+		verify(repository).findTopicOffset(topics, APP);
+	}
+
+	@Test
 	public void shouldUseTopicListAsStartingOffSetWhenIsNotBlank() {
 		Set<String> topics = Stream.of("topic1", "topic2").collect(Collectors.toSet());
 		configurations.put("subscribe", "topic1,topic2");
