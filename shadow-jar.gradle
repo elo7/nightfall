@@ -14,4 +14,8 @@ shadowJar {
 	zip64 true
 }
 
+artifacts {
+	archives shadowJar
+}
+
 build.dependsOn shadowJar

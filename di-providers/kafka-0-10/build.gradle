@@ -14,6 +14,6 @@ dependencies {
 	compile  project(':di'), libs.KAFKA_0_10
 	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.SLF4J
 	// Provided due lack of support for optional dependencies from gradle: https://issues.gradle.org/browse/GRADLE-1749
-	// project(':persistence/cassandra')
-	testCompile libs.TEST
+	compileOnly libs.CASSANDRA_SPARK
+	testCompile libs.TEST, libs.CASSANDRA_SPARK
 }

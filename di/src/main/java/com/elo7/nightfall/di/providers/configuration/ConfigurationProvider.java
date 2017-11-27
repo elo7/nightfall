@@ -38,7 +38,7 @@ public class ConfigurationProvider {
 
 			if (properties == null) {
 				throw new IllegalArgumentException("Invalid source schema [" + schema.getSource()
-						+ "] for Nightfall configuration");
+						+ "] or missing Nightfall configuration");
 			}
 
 			config.load(properties);
