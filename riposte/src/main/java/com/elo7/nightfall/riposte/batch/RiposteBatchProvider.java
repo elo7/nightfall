@@ -28,11 +28,7 @@ class RiposteBatchProvider implements Provider<Dataset<Row>> {
 				.format(configuration.readerFormat())
 				.options(configuration.readerOptions());
 
-		Optional<String[]> readPath = configuration.readerPath();
-
-		if (readPath.isPresent()) {
-			return reader.load(readPath.get());
-		}
+		configuration.readerPath().ifPresent(reader::load);
 
 		return reader.load();
 	}

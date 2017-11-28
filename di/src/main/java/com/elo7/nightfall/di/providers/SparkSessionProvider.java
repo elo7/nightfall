@@ -3,6 +3,7 @@ package com.elo7.nightfall.di.providers;
 import com.elo7.nightfall.di.NightfallConfigurations;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryListener;
 
@@ -25,8 +26,13 @@ class SparkSessionProvider implements Provider<SparkSession> {
 
 		configurations
 				.getPropertiesWithPrefix("spark.")
-				.entrySet()
-				.forEach(entry -> builder.config(entry.getKey(), entry.getValue()));
+				.forEach(builder::config);
+
+		boolean enableHive = configurations.getProperty("nightfall.spark.hive.enable").map(BooleanUtils::toBoolean).orElse(false);
+
+		if (enableHive) {
+			builder.enableHiveSupport();
+		}
 
 		SparkSession session = builder.getOrCreate();
 		reporterListeners.forEach(session.streams()::addListener);
