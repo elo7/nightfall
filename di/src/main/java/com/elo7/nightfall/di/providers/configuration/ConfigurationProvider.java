@@ -28,7 +28,7 @@ public class ConfigurationProvider {
 					properties = new FileInputStream(new File(schema.getPath()));
 					break;
 				case "classpath":
-					properties = ClassLoader.getSystemResourceAsStream(schema.getPath());
+					properties = loadFromClasspath(schema.getPath());
 					break;
 				default:
 					throw new IllegalArgumentException("Invalid configuration source {"
@@ -48,4 +48,13 @@ public class ConfigurationProvider {
 		}
 	}
 
+	private static InputStream loadFromClasspath(String path) {
+		InputStream properties = ConfigurationProvider.class.getResourceAsStream(path);
+
+		if (properties == null) {
+			properties = ClassLoader.getSystemResourceAsStream(path);
+		}
+
+		return properties;
+	}
 }
