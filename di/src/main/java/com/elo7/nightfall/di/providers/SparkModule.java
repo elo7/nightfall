@@ -39,9 +39,15 @@ class SparkModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		binder()
-				.bind(SparkSession.class)
-				.toProvider(SparkSessionProvider.class);
+		boolean createSparkSession = configurations.getProperty("nightfall.create.sparkSession")
+				.map(BooleanUtils::toBoolean)
+				.orElse(true);
+
+		if (createSparkSession) {
+			binder()
+					.bind(SparkSession.class)
+					.toProvider(SparkSessionProvider.class);
+		}
 
 		Multibinder<TaskProcessor> taskBinder = Multibinder.newSetBinder(binder(), TaskProcessor.class);
 
