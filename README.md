@@ -10,4 +10,4 @@ Developed initally by team Greyjoy, provides dependency injection and configurat
 
 * [Dependency Injection](di/README.md): this is the module that provides the injection of dependency.
 * [Kafka](di-providers/kafka-0-10/README.md): Provides kafka sources with simple injection.
-* [Riposte](di-riposte/README.md): automated simple operations through configurations only.
+* [Riposte](riposte/README.md): automated simple operations through configurations only.
