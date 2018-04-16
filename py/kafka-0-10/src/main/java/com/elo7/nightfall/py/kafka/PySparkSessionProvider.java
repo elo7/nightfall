@@ -10,6 +10,7 @@ import java.util.Set;
 class PySparkSessionProvider implements Provider<SparkSession> {
 
 	private final Set<StreamingQueryListener> reporterListeners;
+	static SparkSession session;
 
 	@Inject
 	PySparkSessionProvider(Set<StreamingQueryListener> reporterListeners) {
@@ -18,7 +19,6 @@ class PySparkSessionProvider implements Provider<SparkSession> {
 
 	@Override
 	public SparkSession get() {
-		SparkSession session = PyKafkaLoader.sparkSession();
 		reporterListeners.forEach(session.streams()::addListener);
 
 		return session;

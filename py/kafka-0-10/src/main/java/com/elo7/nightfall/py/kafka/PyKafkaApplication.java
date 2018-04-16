@@ -18,38 +18,34 @@ import java.util.List;
 @Nightfall(
 		value = ExecutionMode.BATCH,
 		scanPackages = {"com.elo7.nightfall.py.kafka", "com.elo7.nightfall.di.providers.kafka"})
-public class PyKafkaLoader {
+public class PyKafkaApplication {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PyKafkaLoader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PyKafkaApplication.class);
 
 	public static void init(SparkSession session, String[] args) {
 		// Setup PySparkSessionProvider
 		List<String> argsList = new ArrayList<>(Arrays.asList(args));
 		argsList.add("-c");
-		argsList.add(PySparkSessionProvider.class.getName());
+		argsList.add("nightfall.spark.session.provider=" + PySparkSessionProvider.class.getName());
 
 		PySparkSessionProvider.session = session;
-		NightfallApplication.run(PyKafkaLoader.class, argsList.toArray(new String[0]));
+		NightfallApplication.run(PyKafkaApplication.class, argsList.toArray(new String[0]));
 		LOGGER.info("Nightfall loaded!");
 	}
 
-	public static Dataset<Row> load() {
-		return PyKafkaExecutor.load();
-	}
-
-	public static void sink(Dataset<?> dataset) {
-		PyKafkaExecutor.sink(dataset, null);
-	}
-
-	public static void sink(Dataset<?> dataset, String configPrefix) {
-		PyKafkaExecutor.sink(dataset, configPrefix);
-	}
-
-	public static void start() {
+	public static void runStreams() {
 		try {
 			PySparkSessionProvider.session.streams().awaitAnyTermination();
 		} catch (StreamingQueryException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static void main(String[] args) {
+		SparkSession session = SparkSession.builder().master("local[2]").getOrCreate();
+
+		PyKafkaApplication.init(session, new String[]{"-e", "file:///home/fabiano/workspace/elo7/nightfall/nightfall.properties"});
+		Dataset<Row> dataset = PyKafka.load();
+		System.out.println(PyKafka.getProperty("spark.kafka.subscribe"));
 	}
 }

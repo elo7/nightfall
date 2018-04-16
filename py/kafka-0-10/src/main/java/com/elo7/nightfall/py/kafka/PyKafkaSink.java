@@ -19,7 +19,11 @@ class PyKafkaSink {
 		this.configurations = configurations;
 	}
 
-	void writer(Dataset<?> dataset, String configPrefix) {
+	public void sink(Dataset<?> dataset) {
+		sink(dataset, null);
+	}
+
+	public void sink(Dataset<?> dataset, String configPrefix) {
 		if (StringUtils.isBlank(configPrefix)) {
 			configPrefix = "kafka.output.";
 		}
