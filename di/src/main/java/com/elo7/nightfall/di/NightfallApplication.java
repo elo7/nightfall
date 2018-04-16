@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class NightfallApplication {
 
@@ -75,8 +74,7 @@ public class NightfallApplication {
 		packages.add(NightfallApplication.class.getPackage().getName());
 
 		if (nightfall.scanPackages().length > 0) {
-			Stream.of(nightfall.scanPackages())
-					.forEach(packages::add);
+			packages.addAll(Arrays.asList(nightfall.scanPackages()));
 		} else {
 			packages.add(sourcePackage.getName());
 		}

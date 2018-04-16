@@ -2,12 +2,18 @@ package com.elo7.nightfall.di.commons.configuration;
 
 import com.elo7.nightfall.di.commons.configuration.option.PropertyOption;
 import com.elo7.nightfall.di.commons.configuration.option.StringOption;
-import org.junit.Assert;
+import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 public class ConfigurationTest {
 
@@ -23,7 +29,7 @@ public class ConfigurationTest {
 		List<PropertyOption<?>> properties = Collections.singletonList(property);
 		Configuration configuration = new Configuration(args, properties);
 
-		Assert.assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
+		assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
 	}
 
 	@Test
@@ -34,7 +40,7 @@ public class ConfigurationTest {
 		List<PropertyOption<?>> properties = Collections.emptyList();
 		Configuration configuration = new Configuration(args, properties);
 
-		Assert.assertNull(configuration.getConfiguration(property));
+		assertNull(configuration.getConfiguration(property));
 	}
 
 	@Test
@@ -44,7 +50,7 @@ public class ConfigurationTest {
 		List<PropertyOption<?>> properties = Collections.singletonList(property);
 		Configuration configuration = new Configuration(args, properties);
 
-		Assert.assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
+		assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
 	}
 
 	@Test
@@ -54,7 +60,39 @@ public class ConfigurationTest {
 		List<PropertyOption<?>> properties = Collections.singletonList(property);
 		Configuration configuration = new Configuration(args, properties);
 
-		Assert.assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
+		assertEquals(PROPERTY_VALUE, configuration.getConfiguration(property));
+	}
+
+	@Test
+	public void shouldReturnEmptyListForMultipleValuesPropertiesWhenValueIsAbsent() {
+		String[] args = {};
+		PropertyOption<String> property = new StringOption("p", PROPERTY_DESCRIPTION, false, null);
+		List<PropertyOption<?>> properties = Collections.singletonList(property);
+		Configuration configuration = new Configuration(args, properties);
+
+		List<String> result = configuration.getConfigurations(property);
+		assertThat(result, is(Matchers.empty()));
+	}
+
+	@Test
+	public void shouldReturnListForMultipleValuesPropertiesWhenValuesIsPresent() {
+		String[] args = {"-p", "one", "-p", "two"};
+		PropertyOption<String> property = new StringOption("p", PROPERTY_DESCRIPTION, false, null);
+		List<PropertyOption<?>> properties = Collections.singletonList(property);
+		Configuration configuration = new Configuration(args, properties);
+
+		List<String> result = configuration.getConfigurations(property);
+		assertThat(result, hasItems("one", "two"));
+	}
+
+	@Test
+	public void shouldReturnFirstValueForMultipleValuesPropertiesWhenValuesIsPresent() {
+		String[] args = {"-p", "one", "-p", "two"};
+		PropertyOption<String> property = new StringOption("p", PROPERTY_DESCRIPTION, false, null);
+		List<PropertyOption<?>> properties = Collections.singletonList(property);
+		Configuration configuration = new Configuration(args, properties);
+
+		assertEquals("one", configuration.getConfiguration(property));
 	}
 
 	private PropertyOption<?> buildPropertyOption(String defaultValue) {

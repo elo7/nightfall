@@ -1,6 +1,6 @@
 package com.elo7.nightfall.di;
 
-import com.elo7.nightfall.di.providers.configuration.ConfigurationProvider;
+import com.elo7.nightfall.di.providers.configuration.ConfigurationBuilder;
 import com.elo7.nightfall.di.providers.configuration.DefaultConfiguration;
 import com.google.inject.name.Names;
 import com.netflix.governator.configuration.CompositeConfigurationProvider;
@@ -25,7 +25,9 @@ class NightfallBootStrapModule implements BootstrapModule {
 
 	@Override
 	public void configure(BootstrapBinder binder) {
-		Properties loadProperties = ConfigurationProvider.loadProperties(configuration.getConfigurationSchema());
+		Properties loadProperties = new ConfigurationBuilder(configuration.getConfigurationSchema())
+				.withAdditionalOptions(configuration.getAdditionalConfigurations())
+				.build();
 		CompositeConfigurationProvider configurationProvider = new CompositeConfigurationProvider(
 				new SystemConfigurationProvider(),
 				new PropertiesConfigurationProvider(loadProperties));
