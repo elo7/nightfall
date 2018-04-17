@@ -80,7 +80,7 @@ public class ConfigurationBuilder {
 	}
 
 	private static InputStream loadFromClasspath(String path) {
-		InputStream properties = ConfigurationProvider.class.getResourceAsStream(path);
+		InputStream properties = ConfigurationBuilder.class.getResourceAsStream(path);
 
 		if (properties == null) {
 			properties = ClassLoader.getSystemResourceAsStream(path);
