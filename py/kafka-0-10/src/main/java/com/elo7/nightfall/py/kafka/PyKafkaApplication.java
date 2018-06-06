@@ -3,8 +3,6 @@ package com.elo7.nightfall.py.kafka;
 import com.elo7.nightfall.di.ExecutionMode;
 import com.elo7.nightfall.di.Nightfall;
 import com.elo7.nightfall.di.NightfallApplication;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.slf4j.Logger;
@@ -39,13 +37,5 @@ public class PyKafkaApplication {
 		} catch (StreamingQueryException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static void main(String[] args) {
-		SparkSession session = SparkSession.builder().master("local[2]").getOrCreate();
-
-		PyKafkaApplication.init(session, new String[]{"-e", "file:///home/fabiano/workspace/elo7/nightfall/nightfall.properties"});
-		Dataset<Row> dataset = PyKafka.load();
-		System.out.println(PyKafka.getProperty("spark.kafka.subscribe"));
 	}
 }
