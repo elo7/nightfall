@@ -8,15 +8,16 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Configuration implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private final Map<PropertyOption<?>, Object> properties = new HashMap<>();
+	private final CommandLine cmd;
 
 	public Configuration(String[] args, List<PropertyOption<?>> propertyOptions) {
 		Options options = new Options();
@@ -27,39 +28,45 @@ public class Configuration implements Serializable {
 		CommandLineParser parser = new BasicParser();
 
 		try {
-			CommandLine cmd = parser.parse(options, args, false);
-
-			for (PropertyOption<?> property : propertyOptions) {
-				populateProperties(cmd, property);
-			}
+			cmd = parser.parse(options, args, false);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void populateProperties(CommandLine cmd, PropertyOption<?> property) {
-		Optional<?> defaultValue = property.defaultValue();
+	@SuppressWarnings("unchecked")
+	public <T> T getConfiguration(PropertyOption<T> property) {
+		Optional<T> defaultValue = property.defaultValue();
 		String propertyValue = cmd.getOptionValue(property.propertyName());
 
 		if (defaultValue.isPresent()) {
 
 			if (propertyValue == null) {
-				properties.put(property, defaultValue.get());
+				return defaultValue.get();
 			} else {
-				properties.put(property, property.parse(propertyValue));
+				return property.parse(propertyValue);
 			}
 		} else if (cmd.hasOption(property.propertyName())) {
-			properties.put(property, property.parse(propertyValue));
+			return property.parse(propertyValue);
 		}
-	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T getConfiguration(PropertyOption<?> propertyOption) {
-		return (T) properties.get(propertyOption);
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> Optional<T> getOptionalConfiguration(PropertyOption<?> propertyOption) {
-		return Optional.ofNullable((T) properties.get(propertyOption));
+		return Optional.ofNullable((T) getConfiguration(propertyOption));
+	}
+
+	public <T> List<T> getConfigurations(PropertyOption<T> property) {
+		String[] optionValues = cmd.getOptionValues(property.propertyName());
+
+		if (optionValues == null || optionValues.length == 0) {
+			return Collections.emptyList();
+		}
+
+		return Stream.of(optionValues)
+				.map(property::parse)
+				.collect(Collectors.toList());
 	}
 }

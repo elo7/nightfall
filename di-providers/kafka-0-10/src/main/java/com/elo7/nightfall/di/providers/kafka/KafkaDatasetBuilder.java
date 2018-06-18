@@ -6,12 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.kafka010.KafkaSource;
-import org.apache.spark.sql.kafka010.KafkaSourceOffset;
 import org.apache.spark.sql.streaming.DataStreamReader;
 import org.apache.spark.sql.streaming.StreamingQueryListener;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -60,10 +57,10 @@ public class KafkaDatasetBuilder {
 		return kafka.load();
 	}
 
-	private Optional<String> startingOffset(Set<String> topics){
+	private Optional<String> startingOffset(Set<String> topics) {
 		boolean startingOffsetFromRepository = BooleanUtils.toBoolean(configurations.get("persistent.startingOffsets.fromRepository"));
 
-		if (!startingOffsetFromRepository || StringUtils.isNotBlank(configurations.get("startingOffsets"))){
+		if (!startingOffsetFromRepository || StringUtils.isNotBlank(configurations.get("startingOffsets"))) {
 			return Optional.empty();
 		}
 
@@ -75,7 +72,6 @@ public class KafkaDatasetBuilder {
 
 		return Optional.ofNullable(JsonParser.toJson(offsets));
 	}
-
 
 	private Set<String> getTopics() {
 		String topicList = configurations.get("subscribe");

@@ -12,7 +12,12 @@ public enum DefaultPropertySource {
 			"Nightfall configuration path, format: 'zookeeper://host:port,host:port/file/path', "
 					+ "or 'file://file/path'. Defaults to classpath://nightfall.properties",
 			false,
-			"classpath://nightfall.properties"));
+			"classpath://nightfall.properties")),
+	CONF(new StringOption(
+			"c",
+			"Additional configurations, this options overrides any set on nightfall.properties",
+			false)),
+	;
 
 	private final PropertyOption<?> propertyOption;
 

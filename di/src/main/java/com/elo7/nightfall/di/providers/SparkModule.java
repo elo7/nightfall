@@ -7,6 +7,7 @@ import com.elo7.nightfall.di.NightfallConfigurations;
 import com.elo7.nightfall.di.task.Task;
 import com.elo7.nightfall.di.task.TaskProcessor;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
@@ -22,6 +23,7 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @ModuleProvider
 class SparkModule extends AbstractModule {
 
@@ -39,9 +41,7 @@ class SparkModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		binder()
-				.bind(SparkSession.class)
-				.toProvider(SparkSessionProvider.class);
+		bindSparkProvider();
 
 		Multibinder<TaskProcessor> taskBinder = Multibinder.newSetBinder(binder(), TaskProcessor.class);
 
@@ -94,6 +94,22 @@ class SparkModule extends AbstractModule {
 		}
 
 		binder.addBinding().to((Class) task).in(LazySingletonScope.get());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void bindSparkProvider() {
+		String clazz = configurations.getProperty("nightfall.spark.session.provider")
+				.orElse(SparkSessionProvider.class.getName());
+
+		try {
+			Class<Provider<SparkSession>> provider = (Class<Provider<SparkSession>>) Class.forName(clazz);
+
+			binder()
+					.bind(SparkSession.class)
+					.toProvider(provider);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Error configuring spark session provider!", e);
+		}
 	}
 
 	private static class StreamingQueryListenerSetTypeLiteral extends TypeLiteral<Set<StreamingQueryListener>> {

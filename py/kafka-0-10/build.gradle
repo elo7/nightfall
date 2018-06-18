@@ -1,0 +1,17 @@
+description = 'Python wrappers'
+
+ext {
+	projectName = 'nightfall-py-kafka010'
+}
+
+jar {
+	appendix = 'py-kafka010'
+}
+
+apply from: "$rootDir/shadow-jar.gradle"
+
+dependencies {
+	compile  project(':di'), project(':di-providers/kafka-0-10')
+	provided libs.SPARK, libs.COMMONS_CLI, libs.AWS, libs.KAFKA_0_10
+	testCompile libs.TEST
+}

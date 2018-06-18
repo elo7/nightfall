@@ -1,1 +1,1 @@
-include 'di', 'di-providers/kafka-0-10', 'migrations', 'riposte', 'examples' //, 'distcp'
+include 'di', 'di-providers/kafka-0-10', 'migrations', 'riposte', 'examples', 'py/kafka-0-10'
