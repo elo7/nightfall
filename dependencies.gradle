@@ -1,6 +1,6 @@
 // Dependencies
 ext {
-	SPARK_VERSION = "2.3.1"
+	SPARK_VERSION = "2.4.0"
 	SPARK_SCALA_VERSION = "2.11"
 
 	libs = [
@@ -18,7 +18,7 @@ ext {
 		COMMONS_LANG : 'org.apache.commons:commons-lang3:3.5',
 		AWS : ['org.apache.hadoop:hadoop-aws:2.7.1', 'com.amazonaws:aws-java-sdk:1.7.4'],
 		JSON : 'com.google.code.gson:gson:2.3.1',
-		SLF4J : 'org.slf4j:slf4j-api:1.7.16',
+		SLF4J : 'org.slf4j:slf4j-api:1.7.25',
 		GOVERNATOR : [
 			'com.netflix.governator:governator:1.9.3',
 			'com.google.guava:guava:18.0'
