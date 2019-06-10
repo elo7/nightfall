@@ -1,6 +1,6 @@
 // Dependencies
 ext {
-	SPARK_VERSION = "2.4.0"
+	SPARK_VERSION = "2.4.3"
 	SPARK_SCALA_VERSION = "2.11"
 
 	libs = [

@@ -28,6 +28,10 @@ class SparkSessionProvider implements Provider<SparkSession> {
 				.getPropertiesWithPrefix("spark.")
 				.forEach(builder::config);
 
+		configurations
+				.getPropertiesWithPrefix("hive.")
+				.forEach(builder::config);
+
 		boolean enableHive = configurations.getProperty("nightfall.spark.hive.enable").map(BooleanUtils::toBoolean).orElse(false);
 
 		if (enableHive) {
