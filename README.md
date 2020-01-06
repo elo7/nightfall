@@ -1,5 +1,7 @@
 # Nightfall
 
+**DEPRECATED**: nightfall is currently deprecated, as we favor [jupyter](https://jupyter.org/) with [Apache Toree](https://toree.apache.org/) instead.
+
 Nightfall is a Valyrian steel longsword belonging to House Harlaw. It is currently wielded by Ser Harras Harlaw.
 
 Developed initally by team Greyjoy, provides dependency injection and configuration for Spark.
